@@ -84,7 +84,7 @@ return [
          */
         Anomaly\Streams\Platform\StreamsServiceProvider::class,
 
-        Pyradic\CustomInstall\CustomInstallServiceProvider::class
+//        Pyradic\CustomInstall\CustomInstallServiceProvider::class
     ],
 
     /*
