@@ -25,7 +25,7 @@ class AddDepartmentFieldToUsersStream extends Migration
      */
     protected $fields = [
         'available_departments' => [
-            'type'   => 'anomaly.field_type.multiple',
+            'type'   => 'anomaly.field_type.relationship',
             'config' => [
                 'related' => DepartmentModel::class,
             ],
