@@ -11,3 +11,8 @@ composer.lock
 /.tmp
 /packages
 /.idea
+/.phpstorm.meta.php
+/_ide_helper.php
+/bundle-analyzer.html
+/yarn.lock
+/yarn-error.log

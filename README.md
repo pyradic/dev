@@ -1,7 +1,21 @@
-# PyroCMS
+# Pyro
 
-PyroCMS is an easy to use, powerful, and modular CMS and development platform built with Laravel 5.
+#### bootstrap
 
-## Security
+###### 1. Add missing modules from github
+**Inside `addons/shared/pyro`**
+- `git clone https://github.com/pyradic/admin-theme`
 
-If you discover any security related issues, please email ryan@pyrocms.com instead of using the issue tracker.
+
+
+###### 2. Install node_modules
+Because the project is using `yarn workspaces` it can only be installed using `yarn`.
+
+
+###### 3. Compile
+Using `scripts` in `package.json` you can:
+- `serve` to use webpack-dev-server with HMR. The backend is aware and will use the appropriate files.
+- `build:dev` to use webpack in _development_ mode. This will extract all css and js and place it in the respective addon's `resources/css` and `resources/js` folder.
+- `build:prod` does the same as dev, but with all possible optimizations
+
+
