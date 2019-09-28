@@ -1,5 +1,7 @@
 <?php
 
+use Laradic\Idea\IdeaServiceProvider;
+use Laradic\Support\SupportServiceProvider;
 use Pyradic\CustomInstall\CustomInstallServiceProvider;
 
 return [
@@ -79,9 +81,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        /*
-         * Streams Service Provider
-         */
+        IdeaServiceProvider::class,
+        SupportServiceProvider::class,
         Anomaly\Streams\Platform\StreamsServiceProvider::class,
 
 //        Pyradic\CustomInstall\CustomInstallServiceProvider::class

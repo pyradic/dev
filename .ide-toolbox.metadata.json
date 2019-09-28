@@ -1,0 +1,20 @@
+{
+    "registrar": [
+        {
+            "provider": "route_names",
+            "language": "php",
+            "signature": [
+                "route",
+                "route:1"
+            ]
+        }
+    ],
+    "providers": [
+        {
+            "name": "route_names",
+            "lookup_strings": [
+                "crvs.module.departments::lick"
+            ]
+        }
+    ]
+}

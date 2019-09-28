@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.35 on 2019-09-12 03:43:05.
+ * Generated for Laravel 5.8.35 on 2019-09-28 10:44:02.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -14572,6 +14572,26 @@ namespace Illuminate\Support {
      *
      */ 
     class Arr {
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function prefix($prefix, $items)
+        {
+                        return \Illuminate\Support\Arr::prefix($prefix, $items);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function merge($arr1, $arr2, $unique = true)
+        {
+                        return \Illuminate\Support\Arr::merge($arr1, $arr2, $unique);
+        }
          
     }
 
@@ -14580,6 +14600,806 @@ namespace Illuminate\Support {
      *
      */ 
     class Str {
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function bytes($bytes)
+        {
+                        return \Illuminate\Support\Str::bytes($bytes);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function bytesMetric($bytes)
+        {
+                        return \Illuminate\Support\Str::bytesMetric($bytes);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function bytesBinary($bytes)
+        {
+                        return \Illuminate\Support\Str::bytesBinary($bytes);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function parseBytes($bytes)
+        {
+                        return \Illuminate\Support\Str::parseBytes($bytes);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function parseBytesMetric($bytes)
+        {
+                        return \Illuminate\Support\Str::parseBytesMetric($bytes);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function parseBytesBinary($bytes)
+        {
+                        return \Illuminate\Support\Str::parseBytesBinary($bytes);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function append($params = null)
+        {
+                        return \Illuminate\Support\Str::append($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function at($params = null)
+        {
+                        return \Illuminate\Support\Str::at($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function between($params = null)
+        {
+                        return \Illuminate\Support\Str::between($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function camelize($params = null)
+        {
+                        return \Illuminate\Support\Str::camelize($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function chars($params = null)
+        {
+                        return \Illuminate\Support\Str::chars($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function collapseWhitespace($params = null)
+        {
+                        return \Illuminate\Support\Str::collapseWhitespace($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function containsAny($params = null)
+        {
+                        return \Illuminate\Support\Str::containsAny($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function count($params = null)
+        {
+                        return \Illuminate\Support\Str::count($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function countSubstr($params = null)
+        {
+                        return \Illuminate\Support\Str::countSubstr($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function dasherize($params = null)
+        {
+                        return \Illuminate\Support\Str::dasherize($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function delimit($params = null)
+        {
+                        return \Illuminate\Support\Str::delimit($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function endsWithAny($params = null)
+        {
+                        return \Illuminate\Support\Str::endsWithAny($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function ensureLeft($params = null)
+        {
+                        return \Illuminate\Support\Str::ensureLeft($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function ensureRight($params = null)
+        {
+                        return \Illuminate\Support\Str::ensureRight($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function first($params = null)
+        {
+                        return \Illuminate\Support\Str::first($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function hasLowerCase($params = null)
+        {
+                        return \Illuminate\Support\Str::hasLowerCase($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function hasUpperCase($params = null)
+        {
+                        return \Illuminate\Support\Str::hasUpperCase($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function htmlDecode($params = null)
+        {
+                        return \Illuminate\Support\Str::htmlDecode($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function htmlEncode($params = null)
+        {
+                        return \Illuminate\Support\Str::htmlEncode($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function humanize($params = null)
+        {
+                        return \Illuminate\Support\Str::humanize($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function indexOf($params = null)
+        {
+                        return \Illuminate\Support\Str::indexOf($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function indexOfLast($params = null)
+        {
+                        return \Illuminate\Support\Str::indexOfLast($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function insert($params = null)
+        {
+                        return \Illuminate\Support\Str::insert($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isAlpha($params = null)
+        {
+                        return \Illuminate\Support\Str::isAlpha($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isAlphanumeric($params = null)
+        {
+                        return \Illuminate\Support\Str::isAlphanumeric($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isBase64($params = null)
+        {
+                        return \Illuminate\Support\Str::isBase64($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isBlank($params = null)
+        {
+                        return \Illuminate\Support\Str::isBlank($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isHexadecimal($params = null)
+        {
+                        return \Illuminate\Support\Str::isHexadecimal($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isJson($params = null)
+        {
+                        return \Illuminate\Support\Str::isJson($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isLowerCase($params = null)
+        {
+                        return \Illuminate\Support\Str::isLowerCase($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isSerialized($params = null)
+        {
+                        return \Illuminate\Support\Str::isSerialized($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function isUpperCase($params = null)
+        {
+                        return \Illuminate\Support\Str::isUpperCase($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function last($params = null)
+        {
+                        return \Illuminate\Support\Str::last($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function lines($params = null)
+        {
+                        return \Illuminate\Support\Str::lines($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function longestCommonPrefix($params = null)
+        {
+                        return \Illuminate\Support\Str::longestCommonPrefix($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function longestCommonSuffix($params = null)
+        {
+                        return \Illuminate\Support\Str::longestCommonSuffix($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function longestCommonSubstring($params = null)
+        {
+                        return \Illuminate\Support\Str::longestCommonSubstring($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function lowerCaseFirst($params = null)
+        {
+                        return \Illuminate\Support\Str::lowerCaseFirst($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function pad($params = null)
+        {
+                        return \Illuminate\Support\Str::pad($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function padBoth($params = null)
+        {
+                        return \Illuminate\Support\Str::padBoth($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function padLeft($params = null)
+        {
+                        return \Illuminate\Support\Str::padLeft($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function padRight($params = null)
+        {
+                        return \Illuminate\Support\Str::padRight($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function prepend($params = null)
+        {
+                        return \Illuminate\Support\Str::prepend($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function regexReplace($params = null)
+        {
+                        return \Illuminate\Support\Str::regexReplace($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function removeLeft($params = null)
+        {
+                        return \Illuminate\Support\Str::removeLeft($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function removeRight($params = null)
+        {
+                        return \Illuminate\Support\Str::removeRight($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function repeat($params = null)
+        {
+                        return \Illuminate\Support\Str::repeat($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function replace($params = null)
+        {
+                        return \Illuminate\Support\Str::replace($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function reverse($params = null)
+        {
+                        return \Illuminate\Support\Str::reverse($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function safeTruncate($params = null)
+        {
+                        return \Illuminate\Support\Str::safeTruncate($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function shuffle($params = null)
+        {
+                        return \Illuminate\Support\Str::shuffle($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function slugify($params = null)
+        {
+                        return \Illuminate\Support\Str::slugify($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function slice($params = null)
+        {
+                        return \Illuminate\Support\Str::slice($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function split($params = null)
+        {
+                        return \Illuminate\Support\Str::split($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function startsWithAny($params = null)
+        {
+                        return \Illuminate\Support\Str::startsWithAny($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function stripWhitespace($params = null)
+        {
+                        return \Illuminate\Support\Str::stripWhitespace($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function surround($params = null)
+        {
+                        return \Illuminate\Support\Str::surround($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function swapCase($params = null)
+        {
+                        return \Illuminate\Support\Str::swapCase($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function tidy($params = null)
+        {
+                        return \Illuminate\Support\Str::tidy($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function titleize($params = null)
+        {
+                        return \Illuminate\Support\Str::titleize($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toAscii($params = null)
+        {
+                        return \Illuminate\Support\Str::toAscii($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toBoolean($params = null)
+        {
+                        return \Illuminate\Support\Str::toBoolean($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toLowerCase($params = null)
+        {
+                        return \Illuminate\Support\Str::toLowerCase($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toSpaces($params = null)
+        {
+                        return \Illuminate\Support\Str::toSpaces($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toTabs($params = null)
+        {
+                        return \Illuminate\Support\Str::toTabs($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toTitleCase($params = null)
+        {
+                        return \Illuminate\Support\Str::toTitleCase($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function toUpperCase($params = null)
+        {
+                        return \Illuminate\Support\Str::toUpperCase($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function trim($params = null)
+        {
+                        return \Illuminate\Support\Str::trim($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function trimLeft($params = null)
+        {
+                        return \Illuminate\Support\Str::trimLeft($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function trimRight($params = null)
+        {
+                        return \Illuminate\Support\Str::trimRight($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function truncate($params = null)
+        {
+                        return \Illuminate\Support\Str::truncate($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function underscored($params = null)
+        {
+                        return \Illuminate\Support\Str::underscored($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function upperCamelize($params = null)
+        {
+                        return \Illuminate\Support\Str::upperCamelize($params);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function upperCaseFirst($params = null)
+        {
+                        return \Illuminate\Support\Str::upperCaseFirst($params);
+        }
          
     }
  

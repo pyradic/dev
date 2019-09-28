@@ -14,8 +14,14 @@ Because the project is using `yarn workspaces` it can only be installed using `y
 
 ###### 3. Compile
 Using `scripts` in `package.json` you can:
-- `serve` to use webpack-dev-server with HMR. The backend is aware and will use the appropriate files.
-- `build:dev` to use webpack in _development_ mode. This will extract all css and js and place it in the respective addon's `resources/css` and `resources/js` folder.
-- `build:prod` does the same as dev, but with all possible optimizations
+- `yarn serve` to use webpack-dev-server with HMR. The backend is aware and will use the appropriate files.
+- `yarn build:dev` to use webpack in _development_ mode. This will extract all css and js and place it in the respective addon's `resources/css` and `resources/js` folder.
+- `yarn build:prod` does the same as dev, but with all possible optimizations
 
 
+
+
+#### Examples
+
+###### Modify core models. Add fields, methods Custom EntryModel.
+Modify core models by

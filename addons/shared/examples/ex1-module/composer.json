@@ -1,0 +1,12 @@
+{
+    "name": "examples/ex1-module",
+    "type": "streams-addon",
+    "description": "Example 1 module",
+    "keywords": ["pyrocms"],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Examples\\Ex1Module\\": "src/"
+        }
+    }
+}

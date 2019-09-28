@@ -5,16 +5,33 @@
     "keywords": ["cms", "pyro", "pyrocms", "php cms", "laravel cms"],
     "license": "MIT",
     "repositories": [
-        {"type": "composer", "url": "https://packages.pyrocms.com"},
-        {"type": "composer", "url": "https://community.pyrocms.com"},
-        {"type": "path", "url": "../laradic/laradic/composer-merge-plugin"},
-        {"type": "path", "url": "../laradic/laradic/support"},
-        {"type": "path", "url": "../laradic/laradic/testing"}
+        {
+            "type": "path",
+            "url": "packages/pyradic/*"
+        },
+        {
+            "type": "path",
+            "url": "packages/laradic/composer-merge-plugin"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.pyrocms.com"
+        },
+        {
+            "type": "composer",
+            "url": "https://community.pyrocms.com"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.radic.ninja"
+        }
     ],
     "minimum-stability": "dev",
     "prefer-stable": true,
     "scripts": {
-
+        "post-install-cmd": [
+            "@composer update"
+        ],
         "clear": [
             "@composer dump-autoload",
             "@php artisan down --ansi --no-interaction",
@@ -65,7 +82,7 @@
         ]
     },
     "require": {
-        "wikimedia/composer-merge-plugin": "~1.4.0",
+        "laradic/composer-merge-plugin": "~1.0",
         "anomaly/streams-composer-plugin": "~1.1.0",
         "anomaly/streams-platform": "~1.7.0",
         "anomaly/default_authenticator-extension": "~2.1.0",
@@ -108,11 +125,7 @@
         "anomaly/preferences-module": "~2.2.0",
         "anomaly/navigation-module": "~2.4.0",
         "anomaly/dashboard-module": "~2.2.0",
-
-
         "anomaly/addons-module": "~2.3.0",
-
-
         "anomaly/pages-module": "~2.6.0",
         "anomaly/posts-module": "~2.6.0",
         "anomaly/contact-plugin": "~1.2.0",
@@ -125,7 +138,6 @@
         "anomaly/settings-module": "~2.4.0",
         "anomaly/blocks-module": "~1.3.0",
         "anomaly/search-module": "~3.0.0",
-
         "anomaly/system-module": "~1.0.0",
         "anomaly/users-module": "~2.5.0",
         "anomaly/files-module": "~2.6.0",
@@ -156,8 +168,20 @@
         "_require": {
         },
         "merge-plugin": {
-            "include": ["addons/*/*/*/composer.json", "core/*/*/composer.json","packages/*/composer.json"],
-            "replaces": ["packages/*/composer.json"],
+            "include": [
+                "addons/*/*/*/composer.json",
+                "core/*/*/composer.json",
+                "packages/pyradic/*/composer.json",
+                "packages/laradic/idea/composer.json",
+                "packages/laradic/generators/composer.json",
+                "packages/laradic/support/composer.json"
+            ],
+            "replaces": [
+                "packages/pyradic/*/composer.json",
+                "packages/laradic/idea/composer.json",
+                "packages/laradic/generators/composer.json",
+                "packages/laradic/support/composer.json"
+            ],
             "recurse": true,
             "replace": false,
             "merge-dev": true

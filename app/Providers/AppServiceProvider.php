@@ -27,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->config->push('streams::addons.directories', base_path('examples/ex1-module'));
         $this->app->register(PydocServiceProvider::class);
         $this->app->register(IdeHelperServiceProvider::class);
         $this->app->singleton('command.test', TestCommand::class);
