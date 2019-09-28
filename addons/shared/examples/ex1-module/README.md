@@ -3,7 +3,7 @@
 - Adds menu item, buttons, routes, etc to users-module
 - Sets departments in context of users (control panel, namespace, etc)
 
-### Points of Interest
+### Highlights
 ##### Migrations : using namespace
 
 - [migrations/2019_09_28_134133_examples.module.ex1__create_users_fields.php](migrations/2019_09_28_134133_examples.module.ex1__create_users_fields.php)

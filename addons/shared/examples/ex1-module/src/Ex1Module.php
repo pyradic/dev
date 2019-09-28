@@ -4,12 +4,9 @@ use Anomaly\Streams\Platform\Addon\Module\Module;
 
 class Ex1Module extends Module
 {
+    protected $navigation = false;
+
     protected $sections = [
-        'departments' => [
-            'buttons' => [
-                'new_department',
-            ],
-        ],
-        'sdf' => ['']
+//        'departments' => [        ]
     ];
 }

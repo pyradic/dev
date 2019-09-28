@@ -1,0 +1,8 @@
+
+
+body.display--compact #topbar {
+    max-height : 50px;
+}
+body.display--compact #topbar > .navbar {
+    max-height : 50px;
+}
