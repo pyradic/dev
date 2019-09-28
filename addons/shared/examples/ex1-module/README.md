@@ -48,7 +48,8 @@ This would result in empty control panel sections.
 So the routes need to be defined in the `map()` method.
 This way the control panel sections for the users-module are shown
 
-- [`Examples\Ex1Module\Ex1ModuleServiceProvider`](src/Ex1ModuleServiceProvider.php)
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider::$routes`](src/Ex1ModuleServiceProvider.php#L30)
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider::map()`](src/Ex1ModuleServiceProvider.php#L84)
 
 ```php
 public function map(Router $router)
@@ -66,7 +67,7 @@ public function map(Router $router)
 As the title says. Need to explicitly set the columns that are used by the translator.  
 As these otherwise get resolved to 'anomaly.module.users::...'
 
-- [`Examples\Ex1Module\Ex1ModuleServiceProvider`](src/Ex1ModuleServiceProvider.php)
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider::boot()`](src/Ex1ModuleServiceProvider.php#L58)
 ```php
 public function boot(ModuleCollection $modules)
 {
@@ -88,7 +89,7 @@ To use the `department` field we need to add it to the `UserForm`.
 The need to extend and wrapping in a decorator class is because the alternative, overriding the binding, will work only once.
 What if other modules also want to add 1 or more fields to the user form.
 
-- [`Examples\Ex1Module\Ex1ModuleServiceProvider`](src/Ex1ModuleServiceProvider.php)
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider::register()`](src/Ex1ModuleServiceProvider.php#L45)
 ```php
 public function register(){
     $this->app->extend(UserFormSections::class, function (UserFormSections $target) {
