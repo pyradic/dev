@@ -1,4 +1,7 @@
-# Pyro
+# Pyro Examples
+
+#### Examples
+[Check em out here](addons/shared/examples)
 
 #### bootstrap
 
@@ -21,7 +24,3 @@ Using `scripts` in `package.json` you can:
 
 
 
-#### Examples
-
-###### Modify core models. Add fields, methods Custom EntryModel.
-Modify core models by
