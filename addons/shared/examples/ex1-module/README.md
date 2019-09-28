@@ -29,37 +29,6 @@ protected $delete = false;
 protected $assignments = ['department',];
 ```
 
-##### Routing : set context of routes
-This will make the controller's TableBuilder/FormBuilder change it's behaviour slightly so it  
-renders links, breadcrumbs etc like it belongs to the users module.
-
-- [`Examples\Ex1Module\Ex1ModuleServiceProvider`](src/Ex1ModuleServiceProvider.php)
-```php
-protected $routes = [
-    '/admin/users/departments'          => [
-        'as'             => 'examples.module.ex1::departments.index',
-        'uses'           => 'Examples\Ex1Module\Http\Controller\Admin\DepartmentController@index',
-        'streams::addon' => 'anomaly.module.users', // << set context
-    ],
-];
-```
-
-
-##### Navigation : append menu item and buttons to Users module
-As the title says.
-
-- [`Examples\Ex1Module\Ex1ModuleServiceProvider`](src/Ex1ModuleServiceProvider.php)
-```php
-public function boot(ModuleCollection $modules)
-{
-    /** @var \Anomaly\UsersModule\UsersModule $module */
-    $module = $modules->get('anomaly.module.users');
-    $module->addSection('departments', Arr::get($this->addon->getSections(), 'departments', []));
-}
-```
-
-
-
 
 ##### Model : point to the right entry model
 As the title says.
@@ -68,4 +37,65 @@ As the title says.
 ```php
 use Anomaly\Streams\Platform\Model\Users\UsersDepartmentEntryModel; // <<< is not the default generated
 class DepartmentModel extends UsersDepartmentEntryModel implements DepartmentInterface {}
+```
+
+
+##### Routing
+Cannot declare the routes in the `$routes` property,
+`AddonProvider::registerRoutes` adds/overrides the `streams:addon` value to `$addon->getNamespace()`.
+This would result in empty control panel sections.
+
+So the routes need to be defined in the `map()` method.
+This way the control panel sections for the users-module are shown
+
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider`](src/Ex1ModuleServiceProvider.php)
+
+```php
+public function map(Router $router)
+{
+    $router->any('/admin/users/departments', [
+        'as'   => 'examples.module.ex1::departments.index',
+        'uses' => 'Examples\Ex1Module\Http\Controller\Admin\DepartmentsController@index',
+    ]);
+    //..
+}
+```
+
+
+##### Navigation : append menu item and buttons to Users module
+As the title says. Need to explicitly set the columns that are used by the translator.  
+As these otherwise get resolved to 'anomaly.module.users::...'
+
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider`](src/Ex1ModuleServiceProvider.php)
+```php
+public function boot(ModuleCollection $modules)
+{
+    $modules->get('anomaly.module.users')->addSection('departments', [
+        'title'   => 'examples.module.ex1::section.departments.title',
+        'buttons' => [
+            'new_department' => [
+                'text' => 'examples.module.ex1::button.new_department',
+            ],
+        ],
+    ]);
+}
+```
+
+
+##### UserForm : add 'department' field to form fields and sections
+To use the `department` field we need to add it to the `UserForm`.
+
+The need to extend and wrapping in a decorator class is because the alternative, overriding the binding, will work only once.
+What if other modules also want to add 1 or more fields to the user form.
+
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider`](src/Ex1ModuleServiceProvider.php)
+```php
+public function register(){
+    $this->app->extend(UserFormSections::class, function (UserFormSections $target) {
+            return new UserFormSectionsDecorator($target);
+    });
+    $this->app->extend(UserFormFields::class, function (UserFormFields $target) {
+        return new UserFormFieldsDecorator($target);
+    });
+}
 ```
