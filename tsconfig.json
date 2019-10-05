@@ -30,8 +30,7 @@
         "emitDecoratorMetadata": true
     },
     "include": [
-        "web.ts",
-        "webpack.base.ts",
+        "utils.ts",
         "webpack.config.ts"
     ],
     "exclude": [

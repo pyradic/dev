@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel 5, to provide autocomplete information to your IDE
- * Generated for Laravel 5.8.35 on 2019-09-28 10:44:02.
+ * Generated for Laravel 5.8.35 on 2019-09-30 05:37:02.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -2636,19 +2636,6 @@ namespace Illuminate\Support\Facades {
     class Bus {
         
         /**
-         * Dispatch a command to its appropriate handler.
-         *
-         * @param mixed $command
-         * @return mixed 
-         * @static 
-         */ 
-        public static function dispatch($command)
-        {
-                        /** @var \Illuminate\Bus\Dispatcher $instance */
-                        return $instance->dispatch($command);
-        }
-        
-        /**
          * Dispatch a command to its appropriate handler in the current process.
          *
          * @param mixed $command
@@ -2658,8 +2645,52 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function dispatchNow($command, $handler = null)
         {
-                        /** @var \Illuminate\Bus\Dispatcher $instance */
+                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
                         return $instance->dispatchNow($command, $handler);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function before($command, $listener = null)
+        {
+                        return \Pyradic\Platform\Bus\Dispatcher::before($command, $listener);
+        }
+        
+        /**
+         * Runs after dispatching a command, you can optionally pass a command class too so it only runs after that command has been dispatched
+         * 
+         * ```php
+         * Dispatcher::after(function(CommandInspector $inspector, $result=null){
+         * });
+         * Dispatcher::after(BootApp::class, function(CommandInspector $inspector, $result=null){
+         * });
+         * ```
+         *
+         * @param string|callable $command Either a listener function or a FQCN string
+         * @param null|callable $listener If you used a FQCN string for $command then this should be a listener function
+         * @return void 
+         * @static 
+         */ 
+        public static function after($command, $listener = null)
+        {
+                        \Pyradic\Platform\Bus\Dispatcher::after($command, $listener);
+        }
+        
+        /**
+         * Dispatch a command to its appropriate handler.
+         *
+         * @param mixed $command
+         * @return mixed 
+         * @static 
+         */ 
+        public static function dispatch($command)
+        {
+            //Method inherited from \Illuminate\Bus\Dispatcher            
+                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
+                        return $instance->dispatch($command);
         }
         
         /**
@@ -2671,7 +2702,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function hasCommandHandler($command)
         {
-                        /** @var \Illuminate\Bus\Dispatcher $instance */
+            //Method inherited from \Illuminate\Bus\Dispatcher            
+                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
                         return $instance->hasCommandHandler($command);
         }
         
@@ -2684,7 +2716,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function getCommandHandler($command)
         {
-                        /** @var \Illuminate\Bus\Dispatcher $instance */
+            //Method inherited from \Illuminate\Bus\Dispatcher            
+                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
                         return $instance->getCommandHandler($command);
         }
         
@@ -2698,7 +2731,8 @@ namespace Illuminate\Support\Facades {
          */ 
         public static function dispatchToQueue($command)
         {
-                        /** @var \Illuminate\Bus\Dispatcher $instance */
+            //Method inherited from \Illuminate\Bus\Dispatcher            
+                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
                         return $instance->dispatchToQueue($command);
         }
         
@@ -2706,12 +2740,13 @@ namespace Illuminate\Support\Facades {
          * Set the pipes through which commands should be piped before dispatching.
          *
          * @param array $pipes
-         * @return \Illuminate\Bus\Dispatcher 
+         * @return \Pyradic\Platform\Bus\Dispatcher 
          * @static 
          */ 
         public static function pipeThrough($pipes)
         {
-                        /** @var \Illuminate\Bus\Dispatcher $instance */
+            //Method inherited from \Illuminate\Bus\Dispatcher            
+                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
                         return $instance->pipeThrough($pipes);
         }
         
@@ -2719,12 +2754,13 @@ namespace Illuminate\Support\Facades {
          * Map a command to a handler.
          *
          * @param array $map
-         * @return \Illuminate\Bus\Dispatcher 
+         * @return \Pyradic\Platform\Bus\Dispatcher 
          * @static 
          */ 
         public static function map($map)
         {
-                        /** @var \Illuminate\Bus\Dispatcher $instance */
+            //Method inherited from \Illuminate\Bus\Dispatcher            
+                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
                         return $instance->map($map);
         }
         
@@ -14578,6 +14614,16 @@ namespace Illuminate\Support {
          *
          * @static 
          */ 
+        public static function cut($array, $values)
+        {
+                        return \Illuminate\Support\Arr::cut($array, $values);
+        }
+        
+        /**
+         * 
+         *
+         * @static 
+         */ 
         public static function prefix($prefix, $items)
         {
                         return \Illuminate\Support\Arr::prefix($prefix, $items);
@@ -15400,6 +15446,21 @@ namespace Illuminate\Support {
         {
                         return \Illuminate\Support\Str::upperCaseFirst($params);
         }
+         
+    }
+ 
+}
+
+namespace Anomaly\Streams\Platform\Asset { 
+
+    /**
+     * Class Asset
+     *
+     * @link http://pyrocms.com/
+     * @author PyroCMS, Inc. <support@pyrocms.com>
+     * @author Ryan Thompson <ryan@pyrocms.com>
+     */ 
+    class Asset {
          
     }
  
@@ -18198,6 +18259,8 @@ namespace  {
     class Validator extends \Illuminate\Support\Facades\Validator {}
 
     class View extends \Illuminate\Support\Facades\View {}
+
+    class Asset extends \Anomaly\Streams\Platform\Asset\Asset {}
  
 }
 

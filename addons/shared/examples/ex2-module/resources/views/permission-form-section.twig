@@ -1,0 +1,82 @@
+{# @var field \Anomaly\Streams\Platform\Addon\FieldType\FieldType #}
+{# @var check \Anomaly\CheckboxesFieldType\CheckboxesFieldTypePresenter #}
+<div>
+
+    <div class="card">
+        <ul class="nav nav-sections ">
+            <li class="nav-item">
+                <a href="#tab-list" data-toggle="tab" class="nav-link">List</a>
+            </li>
+            <li class="nav-item ">
+                <a href="#tab-variant-1" data-toggle="tab" class="nav-link">Variant 1</a>
+            </li>
+        </ul>
+        <div class="card-block card-body">
+
+            {# LIST #}
+            <div id="tab-list" class="tab__pane tab-pane">
+                <ul>
+                    {% for addon in data %}
+                        <li>
+                            <div>label: {{ addon.label }}</div>
+                            <div>namespace: {{ addon.namespace }}</div>
+                            <ul>
+                                {% for stream in addon.streams %}
+                                    <li>
+                                        <div>label: {{ stream.label }}</div>
+                                        <div>field: {{ stream.field }}</div>
+                                        <div>key: {{ stream.key }}</div>
+                                        <ul>
+                                            {% for permission in stream.permissions %}
+                                                <li>
+                                                    label: {{ permission.label }}<br>
+                                                    enabled: {{ permission.enabled }}<br>
+                                                    key: {{ permission.key }}<br>
+                                                    permission: {{ permission.permission }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        {# VARIANT 1 #}
+        <div id="tab-variant-1" class="tab__pane tab-pane">
+            <ul class="permission-list">
+                {% for addon in data %}
+                    <li class="permission-list__addon-item">
+                        <div>label: {{ addon.label }}</div>
+                        <div>namespace: {{ addon.namespace }}</div>
+                        <ul class="permission-list permission-list--streams">
+                            {% for stream in addon.streams %}
+                                <li class="permission-list__stream-item">
+                                    <div>label: {{ stream.label }}</div>
+                                    <div>field: {{ stream.field }}</div>
+                                    <div>key: {{ stream.key }}</div>
+                                    <ul class="permission-list permission-list--permissions">
+                                        {% for permission in stream.permissions %}
+                                            <li class="permission-list__permission-item">
+                                                label: {{ permission.label }}<br>
+                                                enabled: {{ permission.enabled }}<br>
+                                                key: {{ permission.key }}<br>
+                                                permission: {{ permission.permission }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+
+</div>

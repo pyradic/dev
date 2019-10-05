@@ -81,8 +81,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        IdeaServiceProvider::class,
-        SupportServiceProvider::class,
+        Pyradic\Platform\PlatformServiceProvider::class,
         Anomaly\Streams\Platform\StreamsServiceProvider::class,
 
 //        Pyradic\CustomInstall\CustomInstallServiceProvider::class
@@ -137,6 +136,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
 
+        'Asset' => \Anomaly\Streams\Platform\Asset\Asset::class
     ],
 
 ];

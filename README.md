@@ -1,5 +1,7 @@
 # Pyro Examples
 
+### Install
+
 #### Examples
 [Check em out here](addons/shared/examples)
 
@@ -24,3 +26,6 @@ Using `scripts` in `package.json` you can:
 
 
 
+### Frontend
+
+#### `@pyro/platform`

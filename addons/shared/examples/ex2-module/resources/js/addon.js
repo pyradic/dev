@@ -1,4 +1,4 @@
-window["pyro"] = window["pyro"] || {}; window["pyro"]["@pyro/admin"] =
+window["pyro"] = window["pyro"] || {}; window["pyro"]["asfd"] =
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -85,17 +85,50 @@ window["pyro"] = window["pyro"] || {}; window["pyro"]["@pyro/admin"] =
 /******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/*!**********************************************************************!*\
-  !*** multi ./addons/shared/pyro/admin-theme/lib/admin.production.ts ***!
-  \**********************************************************************/
+/******/ ({
+
+/***/ "./addons/shared/examples/ex2-module/lib/ex2.development.ts":
+/*!******************************************************************!*\
+  !*** ./addons/shared/examples/ex2-module/lib/ex2.development.ts ***!
+  \******************************************************************/
+/*! exports provided: a */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ex2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ex2 */ "./addons/shared/examples/ex2-module/lib/ex2.ts");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _ex2__WEBPACK_IMPORTED_MODULE_0__["a"]; });
+
+
+
+/***/ }),
+
+/***/ "./addons/shared/examples/ex2-module/lib/ex2.ts":
+/*!******************************************************!*\
+  !*** ./addons/shared/examples/ex2-module/lib/ex2.ts ***!
+  \******************************************************/
+/*! exports provided: a */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return a; });
+var a = 'ffa';
+console.warn('ex2.ts');
+
+/***/ }),
+
+/***/ 0:
+/*!************************************************************************!*\
+  !*** multi ./addons/shared/examples/ex2-module/lib/ex2.development.ts ***!
+  \************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-!(function webpackMissingModule() { var e = new Error("Cannot find module '/home/radic/projects/pyradic/addons/shared/pyro/admin-theme/lib/admin.production.ts'"); e.code = 'MODULE_NOT_FOUND'; throw e; }());
+module.exports = __webpack_require__(/*! /home/radic/projects/pyradic/addons/shared/examples/ex2-module/lib/ex2.development.ts */"./addons/shared/examples/ex2-module/lib/ex2.development.ts");
 
 
 /***/ })
-/******/ ]);
-//# sourceMappingURL=admin.js.map
+
+/******/ });
+//# sourceMappingURL=addon.js.map

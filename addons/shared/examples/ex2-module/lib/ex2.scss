@@ -1,0 +1,25 @@
+@import "~accelerant-theme/resources/scss/bootstrap/mixins";
+@import "~accelerant-theme/resources/scss/theme/mixins";
+
+$form-prefix: examples-module-ex2__permission-form;
+
+.#{$form-prefix} {
+    > .card {
+        display: none;
+    }
+
+    .permission-list {
+        padding: 0;
+        list-style: none;
+
+        &--streams {
+            padding: 10px;
+        }
+        &--permissions {
+            padding: 10px;
+        }
+        &__addon-item {}
+        &__stream-item {}
+        &__permission-item {}
+    }
+}

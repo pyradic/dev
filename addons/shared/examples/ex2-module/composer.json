@@ -1,0 +1,9 @@
+{
+    "name": "examples/ex2-module",
+    "type": "streams-addon",
+    "autoload": {
+        "psr-4": {
+            "Examples\\Ex2Module\\": "src/"
+        }
+    }
+}

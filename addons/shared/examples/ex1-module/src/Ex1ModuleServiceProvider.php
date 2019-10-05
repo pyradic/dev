@@ -1,19 +1,15 @@
 <?php namespace Examples\Ex1Module;
 
 
-use Illuminate\Support\Arr;
-use Illuminate\Routing\Router;
-use Anomaly\UsersModule\User\Form\UserFormFields;
-use Examples\Ex1Module\Department\DepartmentModel;
-use Anomaly\UsersModule\User\Form\UserFormBuilder;
-use Anomaly\UsersModule\User\Form\UserFormSections;
-use Examples\Ex1Module\Department\DepartmentRepository;
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
 use Anomaly\Streams\Platform\Addon\Module\ModuleCollection;
+use Anomaly\UsersModule\User\Form\UserFormBuilder;
 use Examples\Ex1Module\Department\Contract\DepartmentInterface;
-use Examples\Ex1Module\Department\UserForm\UserFormFieldsDecorator;
-use Examples\Ex1Module\Department\UserForm\UserFormSectionsDecorator;
 use Examples\Ex1Module\Department\Contract\DepartmentRepositoryInterface;
+use Examples\Ex1Module\Department\DepartmentModel;
+use Examples\Ex1Module\Department\DepartmentRepository;
+use Illuminate\Routing\Router;
+use Pyradic\Platform\Ui\Form\FormUtil;
 
 class Ex1ModuleServiceProvider extends AddonServiceProvider
 {
@@ -24,6 +20,29 @@ class Ex1ModuleServiceProvider extends AddonServiceProvider
     protected $singletons = [
         DepartmentRepositoryInterface::class => DepartmentRepository::class,
     ];
+
+    public function register()
+    {
+    }
+
+    public function boot(ModuleCollection $modules, UserFormBuilder $builder)
+    {
+        /** @var \Anomaly\UsersModule\UsersModule $module */
+        $modules->get('anomaly.module.users')->addSection('departments', [
+            'title'   => 'examples.module.ex1::section.departments.title',
+            'buttons' => [
+                'new_department' => [
+                    'text' => 'examples.module.ex1::button.new_department',
+                ],
+            ],
+        ]);
+
+//        return;
+        $builder->listen('built', function (UserFormBuilder $builder) {
+            FormUtil::addFieldToSection($builder, 'user.tabs.account.fields', [ 'department' ]);
+            FormUtil::addFieldToForm($builder, [ 'department' ]);
+        });
+    }
 
     // cannot declare routes like this, AddonProvider registerRoutes adds/overrides the 'streams:addon' to $addon->getNamespace()
     // this would result in empty control panel sections
@@ -41,45 +60,6 @@ class Ex1ModuleServiceProvider extends AddonServiceProvider
 //            'uses' => 'Examples\Ex1Module\Http\Controller\Admin\DepartmentsController@edit',
 //        ],
 //    ];
-
-    public function register()
-    {
-        // the need to extend and wrapping in a decorator class is because
-        // the alternative, overriding the binding, will work just for this module.
-        // What if other modules also want to add 1 or more fields to the user form.
-        $this->app->extend(UserFormSections::class, function (UserFormSections $target) {
-            return new UserFormSectionsDecorator($target);
-        });
-        $this->app->extend(UserFormFields::class, function (UserFormFields $target) {
-            return new UserFormFieldsDecorator($target);
-        });
-    }
-
-    public function boot(ModuleCollection $modules, UserFormBuilder $builder)
-    {
-        /** @var \Anomaly\UsersModule\UsersModule $module */
-        $modules->get('anomaly.module.users')->addSection('departments', [
-            'title'   => 'examples.module.ex1::section.departments.title',
-            'buttons' => [
-                'new_department' => [
-                    'text' => 'examples.module.ex1::button.new_department',
-                ],
-            ],
-        ]);
-
-        return;
-        $builder->listen('built', function(UserFormBuilder $builder){
-            $sections = $builder->getForm()->getSections();
-            $data = $sections->user();
-
-            $fields = Arr::get($data, 'user.tabs.account.fields',[]);
-            $fields[] = 'department';
-            Arr::set($data, 'user.tabs.account.fields',$fields);
-
-            $sections->put('user', $data);
-            // form fields already resolved..... cant continue
-        });
-    }
 
     public function map(Router $router)
     {

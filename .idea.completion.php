@@ -22,6 +22,7 @@ namespace Illuminate\Contracts\Foundation {
  * @property \Anomaly\UsersModule\User\Login\LoginFormBuilder login 
  * @property \Illuminate\Mail\Mailer mailer 
  * @property \Anomaly\Streams\Platform\Database\Migration\Migrator migrator 
+ * @property \Pyradic\Platform\Platform platform 
  * @property \Illuminate\Queue\QueueManager queue 
  * @property \Illuminate\Routing\Redirector redirect 
  * @property \Illuminate\Redis\RedisManager redis 

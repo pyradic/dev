@@ -1,0 +1,21 @@
+{
+    "platform": {
+        "scripts": [
+            "http://pyradic.local:8079/js/platform.js",
+            "http://pyradic.local:8079/platform.0bafdb36217004ed7ce3.hot-update.js"
+        ],
+        "styles": []
+    },
+    "ex2": {
+        "scripts": [
+            "http://pyradic.local:8079/js/ex2.js"
+        ],
+        "styles": []
+    },
+    "admin_theme": {
+        "scripts": [
+            "http://pyradic.local:8079/js/admin_theme.js"
+        ],
+        "styles": []
+    }
+}

@@ -11,6 +11,8 @@
 |
 */
 
+
+
 $app = new Illuminate\Foundation\Application(
     realpath(__DIR__ . '/../')
 );
@@ -33,7 +35,7 @@ $app->singleton(
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    'Anomaly\Streams\Platform\Console\Kernel'
+    Pyradic\Platform\Console\Kernel::class //'Anomaly\Streams\Platform\Console\Kernel'
 );
 
 $app->singleton(

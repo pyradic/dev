@@ -12,7 +12,7 @@ return [
      |
      */
 
-    'enabled' => env('DEBUG_BAR', env('APP_DEBUG', true)),
+    'enabled' => env('DEBUG_BAR', env('APP_DEBUG', false)),
 
     /*
      |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
      | can also be used. For PDO, run the package migrations first.
      |
      */
-    
+
     'storage' => [
         'enabled'    => true,
         'driver'     => 'file', // redis, file, pdo
@@ -82,7 +82,7 @@ return [
         'views'           => true,  // Views with their data
         'route'           => true,  // Current route information
         'laravel'         => false, // Laravel version and environment
-        'events'          => false, // All events fired
+        'events'          => true, // All events fired
         'default_request' => false, // Regular or special Symfony request logger
         'symfony_request' => true,  // Only one can be enabled..
         'mail'            => true,  // Catch mail messages
