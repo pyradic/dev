@@ -37,7 +37,6 @@ class Ex1ModuleServiceProvider extends AddonServiceProvider
             ],
         ]);
 
-//        return;
         $builder->listen('built', function (UserFormBuilder $builder) {
             FormUtil::addFieldToSection($builder, 'user.tabs.account.fields', [ 'department' ]);
             FormUtil::addFieldToForm($builder, [ 'department' ]);

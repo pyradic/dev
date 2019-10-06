@@ -48,8 +48,8 @@ This would result in empty control panel sections.
 So the routes need to be defined in the `map()` method.
 This way the control panel sections for the users-module are shown
 
-- [`Examples\Ex1Module\Ex1ModuleServiceProvider::$routes`](src/Ex1ModuleServiceProvider.php#L30)
-- [`Examples\Ex1Module\Ex1ModuleServiceProvider::map()`](src/Ex1ModuleServiceProvider.php#L84)
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider::$routes`](src/Ex1ModuleServiceProvider.php#L46)
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider::map()`](src/Ex1ModuleServiceProvider.php#L64)
 
 ```php
 public function map(Router $router)
@@ -67,7 +67,7 @@ public function map(Router $router)
 As the title says. Need to explicitly set the columns that are used by the translator.  
 As these otherwise get resolved to 'anomaly.module.users::...'
 
-- [`Examples\Ex1Module\Ex1ModuleServiceProvider::boot()`](src/Ex1ModuleServiceProvider.php#L58)
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider::boot()`](src/Ex1ModuleServiceProvider.php#L31)
 ```php
 public function boot(ModuleCollection $modules)
 {
@@ -84,19 +84,17 @@ public function boot(ModuleCollection $modules)
 
 
 ##### UserForm : add 'department' field to form fields and sections
-To use the `department` field we need to add it to the `UserForm`.
+To use the `department` field we need to
+- add it to the `UserForm` fields.
+- add it to a `UserForm` section.
 
-The need to extend and wrapping in a decorator class is because the alternative, overriding the binding, will work only once.
-What if other modules also want to add 1 or more fields to the user form.
+I've written utility functions for both actions, as i think these actions will be quite common.
 
-- [`Examples\Ex1Module\Ex1ModuleServiceProvider::register()`](src/Ex1ModuleServiceProvider.php#L45)
+
+- [`Examples\Ex1Module\Ex1ModuleServiceProvider::boot()`](src/Ex1ModuleServiceProvider.php#L40)
 ```php
-public function register(){
-    $this->app->extend(UserFormSections::class, function (UserFormSections $target) {
-            return new UserFormSectionsDecorator($target);
-    });
-    $this->app->extend(UserFormFields::class, function (UserFormFields $target) {
-        return new UserFormFieldsDecorator($target);
-    });
-}
+$builder->listen('built', function (UserFormBuilder $builder) {
+    FormUtil::addFieldToSection($builder, 'user.tabs.account.fields', [ 'department' ]);
+    FormUtil::addFieldToForm($builder, [ 'department' ]);
+});
 ```
