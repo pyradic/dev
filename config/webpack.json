@@ -1,20 +1,19 @@
 {
     "platform": {
         "scripts": [
-            "http://pyradic.local:8079/js/platform.js"
+            "http://pyro.local:8079/js/platform.js"
         ],
         "styles": []
     },
     "ex2": {
         "scripts": [
-            "http://pyradic.local:8079/js/ex2.js",
-            "http://pyradic.local:8079/ex2.04514149c9710dfa6952.hot-update.js"
+            "http://pyro.local:8079/js/ex2.js"
         ],
         "styles": []
     },
     "admin_theme": {
         "scripts": [
-            "http://pyradic.local:8079/js/admin_theme.js"
+            "http://pyro.local:8079/js/admin_theme.js"
         ],
         "styles": []
     }

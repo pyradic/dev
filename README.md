@@ -7,9 +7,9 @@ The pros of this setup:
 - Allows PyroCMS addons/modules to provide modular frontend assets. similar to laravel.
 - Can be implemented for the admin and/or website
 - Allows exporting/importing between modules
-- Tree hashing
+- Tree shaking
 - Application bootstrapping (similar to Laravel using a service container and service providers.). Check **@pyro/platform**
-- Uses yarn workspaces.
+- Uses yarn workspaces. Which enables us to do something similar to our node packges as `composer-merge-plugin` is doing for php.
 - Webpack HMR support. Automatically switches between compiled assets and webpack-dev-server served assets.
 
 The cons:
@@ -28,6 +28,9 @@ The cons:
             "development": "index.js",
             "production": "index.js"
         }
+    },
+    "dependencies": {
+        "@pyro/platform": "^1.0.0"
     }
 }
 ```
