@@ -17,9 +17,9 @@ class TestCommand extends Command
 
     protected $signature = 'test';
 
-    public function handle(RolePermissionFormBuilder $builder)
+    public function handle()
     {
-        $data = $builder->build(2)->getFormData()->toJson();
+        $this->call('ide:stream');
         return;
     }
 

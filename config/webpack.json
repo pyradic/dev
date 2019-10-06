@@ -1,7 +1,8 @@
 {
     "platform": {
         "scripts": [
-            "http://pyro.local:8079/js/platform.js"
+            "http://pyro.local:8079/js/platform.js",
+            "http://pyro.local:8079/platform.db00dd29961bffb57c37.hot-update.js"
         ],
         "styles": []
     },
@@ -14,6 +15,12 @@
     "admin_theme": {
         "scripts": [
             "http://pyro.local:8079/js/admin_theme.js"
+        ],
+        "styles": []
+    },
+    "menus": {
+        "scripts": [
+            "http://pyro.local:8079/js/menus.js"
         ],
         "styles": []
     }

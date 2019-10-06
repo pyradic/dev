@@ -1,0 +1,17 @@
+{
+    "name": "@pyro/menus",
+    "pyro": {
+        "srcPath": "lib",
+        "entry": {
+            "development": "menus.ts",
+            "production": "menus.ts"
+        }
+    },
+    "version": "1.0.0",
+    "scripts": {},
+    "dependencies": {
+        "@pyro/platform": "^1.0.0"
+    },
+    "devDependencies": {
+    }
+}
