@@ -4,22 +4,8 @@
 $form-prefix: examples-module-ex2__permission-form;
 
 .#{$form-prefix} {
-    > .card {
-        display: none;
-    }
 
-    .permission-list {
-        padding: 0;
-        list-style: none;
+    label {
 
-        &--streams {
-            padding: 10px;
-        }
-        &--permissions {
-            padding: 10px;
-        }
-        &__addon-item {}
-        &__stream-item {}
-        &__permission-item {}
     }
 }

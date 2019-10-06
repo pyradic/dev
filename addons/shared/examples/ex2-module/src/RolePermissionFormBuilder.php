@@ -45,8 +45,8 @@ class RolePermissionFormBuilder extends PermissionFormBuilder
 //                return $section;
 //            });
 //        });
-        $data = collect($this->getSections())->map(function ($section, $namespace) use ($builder) {
-            $addon[ 'namespace' ] = $namespace;
+        $data = collect($this->getSections())->map(function ($section, $key) use ($builder) {
+            $addon[ 'key' ] = $key;
             $addon[ 'label' ]     = trans($section[ 'title' ]);
             $addon[ 'streams' ]   = collect($section[ 'fields' ])->map(function ($fieldSlug) use ($builder) {
                 $field       = $builder->getFormField($fieldSlug);
@@ -67,7 +67,7 @@ class RolePermissionFormBuilder extends PermissionFormBuilder
         })->values()->toArray();
         $assets->add('scripts.js', 'examples.module.ex2::js/addon.js', [ 'webpack:ex2:scripts' ]);
         app()->platform->addProvider('pyro.ex2.PermissionFormServiceProvider');
-        app()->platform->getData()->set('examples.module.ex2.permissions', $data);
+        app()->platform->getData()->set('ex2.permissions', $data);
         $this->addFormData('data', $data);
     }
 

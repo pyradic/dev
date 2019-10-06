@@ -25,7 +25,7 @@ class TestCommand extends Command
 
     public function handle2(AddonCollection $collection, Application $application)
     {
-        Dispatcher::after(GatherJavascriptData::class, function ($command) {
+        Dispatcher::after(GatherJavascriptData::class, function ($command, $inspect) {
             return false;
         });
         $data = $this->dispatchNow(new GatherJavascriptData());

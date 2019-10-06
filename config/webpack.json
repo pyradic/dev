@@ -1,14 +1,14 @@
 {
     "platform": {
         "scripts": [
-            "http://pyradic.local:8079/js/platform.js",
-            "http://pyradic.local:8079/platform.0bafdb36217004ed7ce3.hot-update.js"
+            "http://pyradic.local:8079/js/platform.js"
         ],
         "styles": []
     },
     "ex2": {
         "scripts": [
-            "http://pyradic.local:8079/js/ex2.js"
+            "http://pyradic.local:8079/js/ex2.js",
+            "http://pyradic.local:8079/ex2.dfd10f9765aab999f379.hot-update.js"
         ],
         "styles": []
     },

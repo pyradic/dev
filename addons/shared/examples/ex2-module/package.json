@@ -1,7 +1,5 @@
 {
     "name": "@examples/ex2",
-    "version": "1.0.0",
-    "scripts": {},
     "pyro": {
         "srcPath": "lib",
         "entry": {
@@ -9,6 +7,8 @@
             "production": "ex2.production.ts"
         }
     },
+    "version": "1.0.0",
+    "scripts": {},
     "dependencies": {
         "inversify": "^5.0.1",
         "inversify-binding-decorators": "^4.0.0",

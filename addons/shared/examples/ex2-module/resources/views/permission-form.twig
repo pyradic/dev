@@ -2,128 +2,27 @@
 {{ asset_add("scripts.js", "streams::js/form/keyboard.js") }}
 {{ asset_add("scripts.js", "streams::js/form/translations.js") }}
 {{ asset_add("scripts.js","examples.module.ex2::js/addon.js", ["webpack:ex2:scripts"]) }}
-{#{{ asset_add("ex2.js","module::js/addon.js") }}#}
-{#{{ asset_script("ex2.js") }}#}
-{# @var \Auth auth #}
-{# @var \Anomaly\Streams\Platform\Ui\Form\Form form #}
-
-
+{# @ var \Anomaly\Streams\Platform\Ui\Form\Form form #}
 
 {% if not form.options.locked %}
     {{ asset_add("scripts.js", "streams::js/form/lock.js") }}
 {% endif %}
 
 {% block content %}
-
     <div class="container-fluid">
-
-        <h2>PERM</h2>
-
         {{ form.open({
             'class': 'form ' ~ form.options.class,
-            'id': 'permission-form'
         })|raw }}
         {% include "streams::form/partials/controls" with {"position": "top"} %}
         {% include form.options.get('heading', "streams::form/partials/heading") %}
 
-        {# @var field \Anomaly\Streams\Platform\Addon\FieldType\FieldType #}
-        {# @var check \Anomaly\CheckboxesFieldType\CheckboxesFieldTypePresenter #}
-        <div>
-
-            <div class="card">
-                <ul class="nav nav-sections ">
-                    <li class="nav-item active">
-                        <a href="#tab-list" data-toggle="tab" class="nav-link ">List</a>
-                    </li>
-                    <li class="nav-item ">
-                        <a href="#tab-variant-1" data-toggle="tab" class="nav-link">Variant 1</a>
-                    </li>
-                </ul>
-                <div class="card-block card-body">
-
-                    {# LIST #}
-                    <div id="tab-list" class="tab__pane tab-pane active">
-                        <ul>
-                            {% for addon in data %}
-                                <li>
-                                    <div>label: {{ addon.label }}</div>
-                                    <div>namespace: {{ addon.namespace }}</div>
-                                    <ul>
-                                        {% for stream in addon.streams %}
-                                            <li>
-                                                <div>label: {{ stream.label }}</div>
-                                                <div>field: {{ stream.field }}</div>
-                                                <div>key: {{ stream.key }}</div>
-                                                <ul>
-                                                    {% for permission in stream.permissions %}
-                                                        <li>
-                                                            label: {{ permission.label }}<br>
-                                                            enabled: {{ permission.enabled }}<br>
-                                                            key: {{ permission.key }}<br>
-                                                            permission: {{ permission.permission }}
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-
-                    {# VARIANT 1 #}
-                    <div id="tab-variant-1" class="tab__pane tab-pane">
-                        <ul class="permission-list">
-                            {% for addon in data %}
-                                <li class="permission-list__addon-item">
-                                    <div>label: {{ addon.label }}</div>
-                                    <div>namespace: {{ addon.namespace }}</div>
-                                    <ul class="permission-list permission-list--streams">
-                                        {% for stream in addon.streams %}
-                                            <li class="permission-list__stream-item">
-                                                <div>label: {{ stream.label }}</div>
-                                                <div>field: {{ stream.field }}</div>
-                                                <div>key: {{ stream.key }}</div>
-                                                <ul class="permission-list permission-list--permissions">
-                                                    {% for permission in stream.permissions %}
-                                                        <li class="permission-list__permission-item">
-                                                            label: {{ permission.label }}<br>
-                                                            enabled: {{ permission.enabled }}<br>
-                                                            key: {{ permission.key }}<br>
-                                                            permission: {{ permission.permission }}
-                                                        </li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-
-
+        <div style="display: none">
+            {% include "streams::form/partials/layout" %}
         </div>
+        <permission-tree></permission-tree>
 
-        {#        <p-permissions></p-permissions>#}
-        {#        {% include "streams::form/partials/layout" %}#}
-        {#        <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Permissions</h5>
-                </div>
-                    <div class="card-block card-body">
-                        df
-                    </div>
-                </div>
-                #}
         {% include "streams::form/partials/controls" %}
 
         {{ form.close()|raw }}
-
     </div>
-
 {% endblock %}
