@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { component } from '@pyro/platform';
 import { Aside, Container, Main } from 'element-ui'
+import { MenuType } from './interfaces';
 
 @component({
     components: {
@@ -17,7 +18,7 @@ export default class MenuEditor extends Vue {
     }
 
 
-    handleMenuTypeClick(type){
-
+    handleMenuTypeClick(type:MenuType){
+// this.$http.get()
     }
 }

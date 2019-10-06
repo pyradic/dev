@@ -2,6 +2,7 @@ import Vue from 'vue'
 import '@pyro/platform'
 import MenuEditor from './MenuEditor.vue'
 import MenuEditorTypeListItem from './MenuEditorTypeListItem.vue'
+import { prefixAndRegisterComponents } from '@pyro/platform';
 
 export { MenusVuePlugin }
 export default class MenusVuePlugin {
@@ -13,7 +14,10 @@ export default class MenusVuePlugin {
         }
         this.__installed = true
 
-        _Vue.component('p-menu-editor', MenuEditor)
-        _Vue.component('p-menu-editor-type-list-item', MenuEditorTypeListItem)
+        prefixAndRegisterComponents(_Vue, {
+            'menu-editor': MenuEditor,
+            'menu-editor-type-list-item': MenuEditorTypeListItem,
+        })
+
     }
 }

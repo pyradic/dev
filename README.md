@@ -79,3 +79,38 @@ This is the core for the front-end. It provides us the means to handle a modular
 - Execution lifecycle
 - Inversion Of Control / Service Providers
 - Base classes and utilities
+
+##### Bootstrapping & Lifecycle
+
+```html
+<script>
+// 1. Grab the instance
+var app = pyro.platform.Application.instance
+
+// 2. Create the bootstrap options
+var options = {
+    providers: [
+        pyro.platform.PlatformServiceProvider,
+        //... other modules their providers 
+    ],
+    config: {
+        debug : true,
+        csrf  : 'token-here',
+        prefix: 'pxy'
+    }
+}
+
+// 3. Bootstrap then start
+app
+    .bootstrap(options)
+    .then(function(app){
+        return app.boot()
+    })
+    .then(function(app){
+        return app.start('#main')
+    })
+    .then(function(app){
+        
+    })
+</script>
+```

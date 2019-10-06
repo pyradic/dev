@@ -1,7 +1,7 @@
 {% extends template.layout ?: "theme::layouts/default" %}
 
 {% block content %}
-    <p-menu-editor>
+    <py-menu-editor>
         <template slot="tree">
             {{ tree|raw }}
         </template>
@@ -16,7 +16,7 @@
             {% endfor %}
         </template>
         #}
-    </p-menu-editor>
+    </py-menu-editor>
 {% endblock %}
 
 {#

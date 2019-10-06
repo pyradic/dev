@@ -1,6 +1,6 @@
 @import "~@pyro/admin-theme/lib/styling/base";
 
-$class-prefix: menus;
+$class-prefix: #{$prefix}-menus;
 
 .#{$class-prefix}-old {
     &-admin-ui {

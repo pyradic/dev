@@ -13,6 +13,7 @@
         "serve": "NODE_ENV=development webpack-dev-server --inline --hot --config webpack.config.ts",
         "platform": "cd packages/pyradic/platform && yarn",
         "admin-theme": "cd addons/shared/pyro/admin-theme && yarn",
+        "menus": "cd addons/shared/pyro/menus-module && yarn",
         "ex1": "cd addons/shared/examples/ex1 && yarn",
         "ex2": "cd addons/shared/examples/ex2 && yarn",
         "packages:watch": "concurrently \"yarn build-tools watch\""
