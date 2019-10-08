@@ -28,19 +28,30 @@ class LinkTreeBuilder extends TreeBuilder
      */
     protected $buttons = [
         'add'    => [
-            'data-toggle' => 'modal',
-            'data-target' => '#modal',
+            'data-action' => 'add',
+            'data-id'     => '{entry.id}',
             'text'        => 'pyro.module.menus::button.create_child_link',
-            'href'        => 'admin/menus/links/choose/{request.route.parameters.menu}?parent={entry.id}',
+            'href'        => 'admin/menus/links/choose/{request.route.parameters.menu}/{entry.id}',
         ],
         'view'   => [
-            'target' => '_blank',
+            'data-action' => 'view',
+            'data-id'     => '{entry.id}',
+            'target'      => '_blank',
         ],
         'prompt' => [
-            'permission' => 'pyro.module.menus::links.delete',
-            'href'       => 'admin/menus/links/delete/{entry.id}',
+            'data-action' => 'delete',
+            'data-id'     => '{entry.id}',
+            'href'        => 'admin/menus/links/delete/{entry.id}',
+            'permission'  => 'pyro.module.menus::links.delete',
         ],
     ];
+
+    protected $assets = [
+        'scripts.js' => [
+            'pyro.module.menus::js/addon.js|webpack:menus:scripts',
+        ],
+    ];
+
 
     /**
      * Fired when the builder is ready to build.
@@ -49,7 +60,7 @@ class LinkTreeBuilder extends TreeBuilder
      */
     public function onReady()
     {
-        if (!$this->getMenu()) {
+        if ( ! $this->getMenu()) {
             throw new \Exception('The $menu parameter is required.');
         }
     }
@@ -80,6 +91,7 @@ class LinkTreeBuilder extends TreeBuilder
      * Set the menu.
      *
      * @param $menu
+     *
      * @return $this
      */
     public function setMenu(MenuInterface $menu)

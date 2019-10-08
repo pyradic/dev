@@ -19,7 +19,7 @@ wp.entry('platform').add(resolve(__dirname, `packages/pyradic/platform/lib/platf
 // make it available to other addons
 wp.externals({
     ...wp.get('externals'),
-    '@pyro/platform': ['pyro', 'platform']
+    '@pyro/platform': [ 'pyro', 'platform' ]
 })
 
 
@@ -57,7 +57,27 @@ function getServerConfig(): Configuration {
 }
 
 // Configures and prepares webpack for webpack cli builder (both dev and prod)
-function getBuilderConfig():Configuration{
+function getBuilderConfig(): Configuration {
+
+    wp.devtool('#source-map');
+
+    if ( wp.isProd ) {
+        wp.settings.sourceMap = false;
+        wp.devtool(false)
+        wp.mode('production');
+        wp.optimization.minimize(false)
+
+        blocks.helpers.minimizer(wp, {})
+        blocks.helpers.replaceStyleLoader(wp, 'css')
+        blocks.helpers.replaceStyleLoader(wp, 'scss')
+
+        plugins.loaderOptions(wp, {
+            minimize: true
+        })
+        // helpers.minimizer(wp)
+    }
+
+
     return wp.toConfig()
 }
 

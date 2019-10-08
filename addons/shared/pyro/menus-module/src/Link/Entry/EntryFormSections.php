@@ -29,7 +29,8 @@ class EntryFormSections
         $builder->setSections(
             [
                 'link' => [
-                    'groups' => [
+                    'stacked'           => true,
+                    'tabs' => [
                         'general' => [
                             'title'  => 'pyro.module.menus::tab.general',
                             'fields' => function () use ($type) {

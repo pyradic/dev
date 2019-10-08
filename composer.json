@@ -107,6 +107,7 @@
         "anomaly/wysiwyg-field_type": "~3.1.0",
         "anomaly/boolean-field_type": "~2.3.0",
         "anomaly/country-field_type": "~2.3.0",
+        "anomaly/icon-field_type": "~1.1.0",
         "anomaly/decimal-field_type": "~2.1.0",
         "anomaly/integer-field_type": "~2.1.0",
         "anomaly/editor-field_type": "~3.1.0",

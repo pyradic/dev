@@ -3,13 +3,15 @@
 namespace App;
 
 use Anomaly\Streams\Platform\Addon\AddonCollection;
+use Anomaly\Streams\Platform\Addon\Theme\ThemeCollection;
 use Anomaly\Streams\Platform\Application\Application;
-use Examples\Ex2Module\RolePermissionFormBuilder;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Pyradic\IdeHelper\Command\GenerateCompletion;
 use Pyradic\Platform\Bus\Dispatcher;
 use Pyradic\Platform\Command\GatherJavascriptData;
+use Pyro\MenusModule\Link\Tree\LinkTreeBuilder;
+use Pyro\MenusModule\Menu\Contract\MenuRepositoryInterface;
 
 class TestCommand extends Command
 {
@@ -17,9 +19,14 @@ class TestCommand extends Command
 
     protected $signature = 'test';
 
-    public function handle()
+    public function handle(LinkTreeBuilder $builder, MenuRepositoryInterface $menus, ThemeCollection $themes)
     {
-        $this->call('ide:stream');
+
+        $themes->admin()->first()->setActive(true);
+        auth()->loginUsingId(1);
+        $menu = $menus->findBySlug('footer');
+        $builder->setMenu($menu);
+        $builder->render();
         return;
     }
 

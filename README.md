@@ -4,7 +4,7 @@
 It is still possible to ship pre-compiled frontend assets, no breaking changes or backward incompatibilities & does not interfere with the default PyroCMS assets.
 
 The pros of this setup:
-- Allows PyroCMS addons/modules to provide modular frontend assets. similar to laravel.
+- Allows PyroCMS addons/modules to provide modular frontend assets. similar to the backend.
 - Can be implemented for the admin and/or website
 - Allows exporting/importing between modules
 - Tree shaking

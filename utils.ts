@@ -89,6 +89,7 @@ export function setupWebpacker(path) {
         compilerOptions : {
             target        : 'es5' as any,
             module        : 'esnext' as any,
+            importHelpers : true,
             // allowJs       : true,
             sourceMap     : wp.isDev,
             removeComments: wp.isProd
@@ -144,7 +145,8 @@ export function setupWebpacker(path) {
         '@'                                  : resolve(__dirname, 'packages/pyradic/platform/lib/'),
         '#'                                  : resolve(__dirname, 'packages/pyradic/platform/lib/components/'),
         'node_modules/element-theme-scss/lib': resolve(__dirname, 'packages/element-ui-theme/lib'),
-        'node_modules/element-theme-scss/src': resolve(__dirname, 'packages/element-ui-theme/src')
+        'node_modules/element-theme-scss/src': resolve(__dirname, 'packages/element-ui-theme/src'),
+        'streams::'                          : resolve(__dirname, 'vendor/anomaly/streams-platform/resources')
     });
 
     wp.externals({

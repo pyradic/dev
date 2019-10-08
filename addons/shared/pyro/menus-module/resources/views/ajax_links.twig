@@ -1,7 +1,7 @@
 {% extends template.layout ?: "theme::layouts/default" %}
 
 {% block content %}
-    <py-menu-editor>
+    <py-menu-editor compact>
         <template slot="tree">
             {{ tree|raw }}
         </template>

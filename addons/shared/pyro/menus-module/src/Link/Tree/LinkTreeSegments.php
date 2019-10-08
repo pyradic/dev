@@ -29,9 +29,12 @@ class LinkTreeSegments
             [
                 'entry.title' => [
                     'href' => 'admin/menus/links/{request.route.parameters.menu}/edit/{entry.id}',
+                    'attributes' => [
+                        'data-type' => '{entry.type}'
+                    ]
                 ],
                 [
-                    'class' => 'menus-admin-ui-tree-tag',
+                    'class' => 'py-me__tree-item-tag',
                     'value' => function (LinkInterface $entry, Translator $translator, Parser $parser) {
 
                         $type      = $entry->getType();

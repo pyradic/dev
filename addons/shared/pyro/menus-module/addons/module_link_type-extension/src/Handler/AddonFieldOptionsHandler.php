@@ -2,12 +2,12 @@
 
 namespace Pyro\ModuleLinkTypeExtension\Handler;
 
-use Pyro\AdminTheme\Ui\ControlPanelNavigation;
-use Pyro\Select2FieldType\Select2FieldType;
+use Anomaly\Streams\Platform\Addon\FieldType\FieldType;
+use Pyro\MenusModule\Ui\ControlPanelNavigation;
 
 class AddonFieldOptionsHandler
 {
-    public function handle(Select2FieldType $fieldType, ControlPanelNavigation $navigation)
+    public function handle(FieldType $fieldType, ControlPanelNavigation $navigation)
     {
         $options = [];
         $links   = $navigation->resolve();

@@ -5,4 +5,7 @@ export interface MenuType {
     namespace:string
     description:string
     title:string
+    slug:string
 }
+
+export type MenuEditorMode = 'tree' | 'create' | 'edit' | 'hide'

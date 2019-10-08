@@ -1,7 +1,7 @@
 import './menus.scss'
+import './vendor/jquery.blockUI'
 import { MenusServiceProvider } from './MenusServiceProvider';
 import MenusVuePlugin from './MenusVuePlugin';
-import Vue from 'vue';
 
 export {
     MenusServiceProvider,
@@ -9,8 +9,4 @@ export {
 }
 
 
-class AA extends Vue {
-    asdf(){
-        this.$py.platform;
-    }
-}
+

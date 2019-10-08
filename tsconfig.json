@@ -30,6 +30,7 @@
         "emitDecoratorMetadata": true
     },
     "include": [
+        "test.ts",
         "utils.ts",
         "webpack.config.ts"
     ],

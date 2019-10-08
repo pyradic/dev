@@ -7,11 +7,15 @@ $class-prefix: #{$prefix}-menus;
         //@include make-row();
         //@include row-no-gutter();
 
+
+        // OLD DO NOT EDIT
+        // OLD DO NOT EDIT
+        // OLD DO NOT EDIT
         &-tree {
-            ul.tree .card:hover &-tag {
+            ul.tree .card:hover &-item-tag {
                 display: none;
             }
-            &-tag {
+            &-item-tag {
                 padding: 4px 0 0;
                 float: right;
                 position: absolute;
@@ -20,6 +24,7 @@ $class-prefix: #{$prefix}-menus;
                 .tag {
                     text-shadow: 1px 1px 0px #3d3d3de3;
                     height: 17px;
+                    border-radius: 0;
                 }
                 small,
                 .small {

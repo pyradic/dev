@@ -1,8 +1,7 @@
 {
     "platform": {
         "scripts": [
-            "http://pyro.local:8079/js/platform.js",
-            "http://pyro.local:8079/platform.8bf6894767c6d46787ce.hot-update.js"
+            "http://pyro.local:8079/js/platform.js"
         ],
         "styles": []
     },
@@ -20,7 +19,8 @@
     },
     "menus": {
         "scripts": [
-            "http://pyro.local:8079/js/menus.js"
+            "http://pyro.local:8079/js/menus.js",
+            "http://pyro.local:8079/menus.06177daa07fa417b03c2.hot-update.js"
         ],
         "styles": []
     }
