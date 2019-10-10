@@ -1,9 +1,13 @@
+///<reference path="globals.d.ts"/>
+
 import { blocks, camel2Dash, JsonPlugin, Webpacker } from '@radic/webpacker';
-import { basename, dirname, join, resolve } from 'path';
+import { basename, dirname, join, relative, resolve } from 'path';
 import glob, { IOptions } from 'glob';
 import { existsSync, statSync } from 'fs';
 import { config } from 'dotenv';
 import { IPackageJson } from 'package-json-type';
+import webpack from 'webpack';
+
 
 const { parsed: env } = config({
     debug: true
@@ -22,6 +26,7 @@ export interface PackageJson extends IPackageJson {
 }
 
 export const { presets, rules, plugins, helpers, loaders } = blocks;
+
 
 export function setupWebpacker(path) {
     const wp = new Webpacker({
@@ -66,7 +71,9 @@ export function setupWebpacker(path) {
     });
     rules.stylus(wp);
     rules.images(wp);
-    rules.fonts(wp);
+    rules.fonts(wp, {
+
+    });
     rules.vue(wp);
     rules.pug(wp);
 
@@ -129,7 +136,7 @@ export function setupWebpacker(path) {
     rules.expose(wp, 'inversify')
     rules.expose(wp, 'tapable')
     rules.expose(wp, { name: `lodash`, as: '_' })
-    rules.expose(wp, { name: 'vue', as: 'Vue' })
+    // rules.expose(wp, { name: 'vue', as: 'Vue' })
     rules.expose(wp, { name: 'reflect-metadata', as: 'reflect_metadata' });
 
     wp.resolve.modules.merge([ resolve(__dirname, 'node_modules') ])
@@ -174,20 +181,28 @@ export class Addon {
     pkg: PackageJson;
     pkgPath: string;
     path: string;
+    relativePath: string;
 
     constructor(path: string) {
-        this.path    = path;
-        this.pkgPath = join(path, 'package.json');
-        this.pkg     = require(this.pkgPath);
+        this.path         = path;
+        this.relativePath = relative(process.cwd(), path)
+        this.pkgPath      = join(path, 'package.json');
+        this.pkg          = require(this.pkgPath);
     }
 
     get name(): string {
         return this.pkg.name;
     }
 
+    get firstName(): string {return this.name.split('/')[ 0 ];}
+
+    get firstNameSnake(): string {return this.firstName.replace(/-/g, '_').replace(/@/g, '');}
+
     get lastName(): string {return this.name.split('/')[ 1 ];}
 
     get lastNameSnake(): string {return this.lastName.replace(/-/g, '_');}
+
+    get entryName(): string {return this.firstNameSnake + '__' + this.lastNameSnake }
 
     get srcPath() {
         return join(this.path, this.pkg.pyro.srcPath);
@@ -202,6 +217,11 @@ export class Addon {
 
     getPath(...parts: string[]) {
         return join(this.path, ...parts);
+    }
+
+    getRPath(...parts: string[]) {
+        // to=this.path.replace(to + '/','')
+        return join(this.relativePath, ...parts)
     }
 
     add(wp: Webpacker) {
@@ -264,4 +284,136 @@ export class AddonFinder {
 }
 
 
+
+
+const INDENT = 2;
+const DEFAULT_TRANSFORM = (data) => JSON.stringify(data, null, INDENT);
+
+export interface StatsWriterPluginOptions {
+    filename?:string
+    fields?: Array<keyof webpack.Stats.ToJsonOutput>
+    stats?:any
+    transform?:any
+}
+/**
+ * Stats writer module.
+ *
+ * Stats can be a string or array (we'll have array due to source maps):
+ *
+ * ```js
+ * "assetsByChunkName": {
+ *   "main": [
+ *     "cd6371d4131fbfbefaa7.bundle.js",
+ *     "../js-map/cd6371d4131fbfbefaa7.bundle.js.map"
+ *   ]
+ * },
+ * ```
+ *
+ * **Note**: The stats object is **big**. It includes the entire source included
+ * in a bundle. Thus, we default `opts.fields` to `["assetsByChunkName"]` to
+ * only include those. However, if you want the _whole thing_ (maybe doing an
+ * `opts.transform` function), then you can set `fields: null` in options to
+ * get **all** of the stats object.
+ *
+ * You may also pass a custom stats config object (or string preset) via `opts.stats`
+ * in order to select exactly what you want added to the data passed to the transform.
+ * When `opts.stats` is passed, `opts.fields` will default to `null`.
+ *
+ * See:
+ * - https://webpack.js.org/configuration/stats/#stats
+ * - https://webpack.js.org/api/node/#stats-object
+ *
+ * **`filename`**: The `opts.filename` option can be a file name or path relative to
+ * `output.path` in webpack configuration. It should not be absolute.
+ *
+ * **`transform`**: By default, the retrieved stats object is `JSON.stringify`'ed
+ * but by supplying an alternate transform you can target _any_ output format.
+ * See [`test/webpack4/webpack.config.js`](test/webpack4/webpack.config.js) for
+ * various examples including Markdown output.
+ *
+ * - **Warning**: The output of `transform` should be a `String`, not an object.
+ *   On Node `v4.x` if you return a real object in `transform`, then webpack
+ *   will break with a `TypeError` (See #8). Just adding a simple
+ *   `JSON.stringify()` around your object is usually what you need to solve
+ *   any problems.
+ *
+ * @param {Object}   opts           options
+ * @param {String}   opts.filename  output file name (Default: `"stats.json`")
+ * @param {Array}    opts.fields    fields of stats obj to keep (Default: `["assetsByChunkName"]`)
+ * @param {Object|String}    opts.stats     stats config object or string preset (Default: `{}`)
+ * @param {Function|Promise} opts.transform transform stats obj (Default: `JSON.stringify()`)
+ *
+ * @api public
+ */
+export class StatsWriterPlugin {
+    opts:StatsWriterPluginOptions
+    constructor(opts:StatsWriterPluginOptions) {
+        opts = opts || {};
+        this.opts = {};
+        this.opts.filename = opts.filename || "stats.json";
+        this.opts.fields = typeof opts.fields !== "undefined" ? opts.fields : ["assetsByChunkName"];
+        this.opts.stats = opts.stats || {};
+        this.opts.transform = opts.transform || DEFAULT_TRANSFORM;
+
+        if (typeof opts.stats !== "undefined" && typeof opts.fields === "undefined") {
+            // if custom stats config provided, do not filter fields unless explicitly configured
+            this.opts.fields = null;
+        }
+    }
+
+    apply(compiler) {
+        if (compiler.hooks) {
+            compiler.hooks.emit.tapPromise("stats-writer-plugin", this.emitStats.bind(this));
+        } else {
+            compiler.plugin("emit", this.emitStats.bind(this));
+        }
+    }
+
+    emitStats(curCompiler, callback) {
+        // Get stats.
+        // The second argument automatically skips heavy options (reasons, source, etc)
+        // if they are otherwise unspecified.
+        let stats = curCompiler.getStats().toJson(this.opts.stats, "forToString");
+
+        // Filter to fields.
+        if (this.opts.fields) {
+            stats = this.opts.fields.reduce((memo, key) => {
+                memo[key] = stats[key];
+                return memo;
+            }, {});
+        }
+
+        // Transform to string.
+        let err;
+        return Promise.resolve()
+
+        // Transform.
+            .then(() => this.opts.transform(stats, {
+                compiler: curCompiler
+            }))
+            .catch((e) => { err = e; })
+
+            // Finish up.
+            .then((statsStr) => {
+                // Handle errors.
+                if (err) {
+                    curCompiler.errors.push(err);
+                    if (callback) { return void callback(err); }
+                    throw err;
+                }
+
+                // Add to assets.
+                curCompiler.assets[this.opts.filename] = {
+                    source() {
+                        return statsStr;
+                    },
+                    size() {
+                        return statsStr.length;
+                    }
+                };
+
+                if (callback) { return void callback(); }
+            });
+    }
+}
 

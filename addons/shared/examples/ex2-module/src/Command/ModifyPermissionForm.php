@@ -50,7 +50,7 @@ class ModifyPermissionForm
             return $addon;
         })->values()->toArray();
         $assets->add('scripts.js', 'examples.module.ex2::js/addon.js', [ 'webpack:ex2:scripts' ]);
-        app()->platform->addProvider('pyro.ex2.Ex2ServiceProvider');
+        app()->platform->addProvider('pyro.examples__ex2.Ex2ServiceProvider');
         app()->platform->getData()->set('ex2.permissions', $data);
         $this->builder->addFormData('data', $data);
     }

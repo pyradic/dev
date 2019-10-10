@@ -1,11 +1,14 @@
+///<reference path="globals.d.ts"/>
+
 Error.stackTraceLimit = Infinity;
 
 import { blocks, plugins } from '@radic/webpacker';
-import { Addon, AddonFinder, setupWebpacker } from './utils'
+import { Addon, AddonFinder, setupWebpacker, StatsWriterPlugin, StatsWriterPluginOptions } from './utils'
 import { resolve } from 'path';
-import { Configuration } from 'webpack';
+import { Configuration, Stats } from 'webpack';
+import { ExtraTemplatedPathsPlugin, ExtraTemplatedPathsPluginOptions } from './ExtraTemplatedPathsPlugin';
 
-
+const EXPORT_NAMESPACE = 'pyro';
 const wp                          = setupWebpacker(__dirname);
 const mode: Configuration['mode'] = wp.store.get('mode');
 
@@ -14,52 +17,74 @@ const mode: Configuration['mode'] = wp.store.get('mode');
 wp.ensureLink('packages/element-ui-theme', 'node_modules/element-ui-theme');
 wp.ensureLink('core/pyrocms/accelerant-theme', 'node_modules/accelerant-theme'); // allows us to use @import "~accelerant-theme/.." in our SCSS
 
+
+wp.output.library([ EXPORT_NAMESPACE, '[addon:entryName]' ] as any)
+//     .libraryTarget('window')
+//     .filename('js/[addon]/[name].js')
+//     .chunkFilename('js/[name].chunk.[id].js');
+
+
 // add platform core module entry point
-wp.entry('platform').add(resolve(__dirname, `packages/pyradic/platform/lib/platform.${mode}.ts`));
-// make it available to other addons
-wp.externals({
-    ...wp.get('externals'),
-    '@pyro/platform': [ 'pyro', 'platform' ]
-})
+// wp.entry('platform').add(resolve(__dirname, `packages/pyradic/platform/lib/platform.${mode}.ts`));
+// // make it available to other addons
+// wp.externals({
+//     ...wp.get('externals'),
+//     '@pyro/platform': [ 'pyro', 'platform' ]
+// })
 
 
 // add all addon module entry points
-const finder          = AddonFinder.make([
+const finder        = AddonFinder.make([
+    'packages/pyradic/platform/package.json',
     'addons/shared/*/*/package.json',
     'addons/*/*/package.json'
 ])
-const addons: Addon[] = finder.find();
+let addons: Addon[] = finder.find();
+// addons              = addons.filter(a => [ '@pyro/platform', '@examples/ex2', '@pyro/admin-theme' ].includes(a.name))
 for ( const addon of addons ) {
-    addon.add(wp)
+    // addon.add(wp)
+    wp.externals({
+        ...wp.get('externals'),
+        [ addon.name ]: [ EXPORT_NAMESPACE, addon.entryName ]
+    });
+    // let p =addon.getRPath('resources')
+    // wp.resolve.alias.set(addon.name, p)
+    // wp.entry(addon.lastNameSnake).add(wp.isDev ? addon.entry.development : addon.entry.production);
+    wp.entry(addon.entryName).add(addon.entry.development);
 }
 
-// Configures and prepares webpack for webpack-dev-server (with HMR)
-function getServerConfig(): Configuration {
-    wp.devtool('#source-map');
-    wp.mode('development')
+wp.entry('vendor').merge(['vue']);
 
-    wp.module.rules.delete('source-map-loader');
-
-    blocks.helpers.setServerLocation(
-        wp,
-        process.env.WEBPACK_PROTOCOL as any || 'http',
-        process.env.WEBPACK_HOST || 'localhost',
-        process.env.WEBPACK_PORT as any || 8079
-    );
-
-    blocks.helpers.devServer(wp)
-
-    plugins.json(wp, {
-        filePath: resolve(__dirname, 'config', 'webpack.json')
-    })
-
-    return wp.toConfig();
+let templatedPaths: ExtraTemplatedPathsPluginOptions = {
+    templates: {
+        addon: (c, p) => {
+            let addon = addons.find(a => a.entryName === c.chunkName);
+            if ( !addon ) {
+                return false;
+            }
+            if ( !p.hasArg ) {
+                return addon.path;
+            }
+            if ( typeof addon[ p.arg ] === 'string' ) {
+                return addon[ p.arg ];
+            }
+            return false;
+        }
+    }
 }
+
+wp.plugin('extra-templated-paths').use(ExtraTemplatedPathsPlugin as any, [ templatedPaths ])
+
 
 // Configures and prepares webpack for webpack cli builder (both dev and prod)
 function getBuilderConfig(): Configuration {
 
     wp.devtool('#source-map');
+
+    wp.output
+        .filename('js/[name].js')
+        .path(__dirname + '/public/assets')
+        .chunkFilename('js/[name].chunk.[id].js');
 
     if ( wp.isProd ) {
         wp.settings.sourceMap = false;
@@ -70,19 +95,96 @@ function getBuilderConfig(): Configuration {
         blocks.helpers.minimizer(wp, {})
         blocks.helpers.replaceStyleLoader(wp, 'css')
         blocks.helpers.replaceStyleLoader(wp, 'scss')
+        blocks.plugins.miniCssExtract(wp, {
+            filename     : '[name].css',
+            // filename     : <any>(()=>{
+            //     return '[name].css'
+            // }),
+            chunkFilename: '[name].chunk.[id].css'
+        })
 
         plugins.loaderOptions(wp, {
-            minimize: true
+            minimize: false
         })
         // helpers.minimizer(wp)
     }
 
+    // wp.output.chunkFilename('public/vendor/chunks/[name].js')
+
+    wp.extendConfig(config => {
+        config.optimization = {
+            namedChunks : true,
+            namedModules: true,
+            chunkIds    : 'named',
+            moduleIds   : 'named',
+            minimize    : false
+        }
+        return config;
+    })
+    // wp.extendConfig(config => {
+    //     config.optimization              = config.optimization || {}
+    //     config.optimization.runtimeChunk = 'multiple';
+    //     config.optimization.splitChunks  = {
+    //         chunks            : 'all',
+    //         maxInitialRequests: Infinity,
+    //         minSize           : 0,
+    //         minChunks         : 2
+    //         // cacheGroups       : {
+    //         //     vendor: {
+    //         //         test: /[\\/]node_modules[\\/]/,
+    //         //         name(module) {
+    //         //             // get the name. E.g. node_modules/packageName/not/this/part.js
+    //         //             // or node_modules/packageName
+    //         //             const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[ 1 ];
+    //         //
+    //         //             // npm package names are URL-safe, but some servers don't like @ symbols
+    //         //             return `npm.${packageName.replace('@', '')}`;
+    //         //         }
+    //         //     }
+    //         // }
+    //     }
+    //     return config;
+    // })
 
     return wp.toConfig()
 }
 
+// Configures and prepares webpack for webpack-dev-server (with HMR)
+function getServerConfig(): Configuration {
+    wp.devtool('#source-map');
+    wp.mode('development')
+
+    // addons.forEach(addon => wp.resolve.alias.set(addon.name, addon.entry.development))
+
+
+    wp.module.rules.delete('source-map-loader');
+    wp.stats(false)
+    blocks.helpers.setServerLocation(
+        wp,
+        process.env.WEBPACK_PROTOCOL as any || 'http',
+        process.env.WEBPACK_HOST || 'localhost',
+        process.env.WEBPACK_PORT as any || 8179
+    );
+
+    blocks.helpers.devServer(wp)
+
+    plugins.json(wp, {
+        filePath: resolve(__dirname, 'config', 'webpack.json')
+    })
+
+wp.devServer
+    .contentBase(__dirname + '/public')
+    .overlay(true)
+    // .color(true)
+    // .progress(true)
+    // .useLocalIp(true)
+    // .host(process.env.WEBPACK_HOST || 'localhost')
+
+    return wp.toConfig();
+}
+
 let config;
-if ( wp.isHot ) {
+if ( wp.isServer ) {
     config = getServerConfig()
 } else {
     config = getBuilderConfig()

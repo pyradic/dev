@@ -1,4 +1,133 @@
+@import "~@pyro/platform/lib/styling/base";
 @import "~@pyro/admin-theme/lib/styling/base";
+
+$menu-editor-prefix: #{$prefix}-me;
+
+.#{$menu-editor-prefix} {
+    &__tree {
+        > .container-fluid {
+            margin: 0;
+            width: 100%;
+        }
+
+        .tree .card {
+            > a {
+                font-size: 12px;
+                font-family: monospace;
+            }
+
+            > .buttons {
+                margin: 2px 0;
+
+
+                .btn {
+                    border-radius: 0;
+                }
+            }
+        }
+
+        ul.tree .card:hover > .buttons {
+            display: flex;
+        }
+
+        ul.tree .card:hover &-item-tag {
+            display: none;
+        }
+    }
+
+    &__tree-item-tag {
+        padding: 4px 0 0;
+        float: right;
+        position: absolute;
+        right: 5px;
+
+        .tag {
+            text-shadow: 1px 1px 0px #3d3d3de3;
+            height: 17px;
+            border-radius: 0;
+        }
+
+        small,
+        .small {
+            font-size: 11px;
+            padding: 3px 10px;
+            text-transform: uppercase;
+        }
+
+        .info-tag {
+            font-weight: normal;
+            font-size: 9px;
+            padding: 5px;
+        }
+    }
+
+    &__side {
+
+        transition: all .3s ease;
+    }
+}
+
+@media (min-width: 992px) {
+    body.display--compact {
+        .#{$menu-editor-prefix} {
+            &__tree {
+                ul.tree .card {
+                    > a {
+                        font-size: 10px
+                    }
+                }
+            }
+        }
+    }
+}
+
+.#{$menu-editor-prefix}--scrollable {
+    .#{$menu-editor-prefix} {
+        &__tree {
+            max-height: calc(80vh);
+            overflow: hidden;
+            overflow-y: scroll;
+        }
+    }
+}
+
+.#{$menu-editor-prefix}--compact {
+    .py-me {
+        &__tree {
+            .tree li ul {
+                padding-inline-start: 24px;
+            }
+
+            .tree .card {
+                font-size: 12px !important;
+                margin-bottom: 1px;
+                border: 0;
+                border-radius: 0;
+
+                > .handle {
+                    padding: 5px 7px;
+                }
+
+                > .buttons {
+                    margin: 3px 0;
+
+                    .btn.btn-xs {
+                        padding: 0.15rem 0.3333333333rem;
+                    }
+                }
+            }
+        }
+
+        &__tree-item-tag {
+            padding: 2px 0 0;
+        }
+    }
+}
+
+
+.#{$menu-editor-prefix}__form {
+}
+
 
 $class-prefix: #{$prefix}-menus;
 

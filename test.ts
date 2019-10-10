@@ -1,30 +1,22 @@
-import { Container, interfaces } from 'inversify'
+import webpacker,{Webpacker,interfaces,blocks} from  '@radic/webpacker'
+import { Blocks } from '@radic/webpacker/lib/blocks';
 
-class App extends Container {
+declare module '@radic/webpacker/lib/blocks' {
+    export interface Blocks {
+        pyrocms: {
+            asdf()
+        }
+    }
+}
+declare module '@radic/webpacker/lib/Webpacker' {
 
+    interface Webpacker {
+        blocks:Blocks
+    }
 }
 
-class Binder {
-    constructor(protected app: App) {}
-
-    bind<T>(id: interfaces.ServiceIdentifier<T>, singleton: boolean, binder: (app: App) => any)
-    bind<T>(id: interfaces.ServiceIdentifier<T>, binder: (app: App) => any)
-    bind<T>(...args) {
-        let id: interfaces.ServiceIdentifier<T> = args.shift()
-        let singleton: boolean                  = false;
-        if ( typeof args[ 0 ] === 'boolean' ) {
-            singleton = args.shift()
-        }
-        let binder: (app: App) => any = args.shift();
-
-        if(singleton) {
-            let result;
-            this.app.bind(id).toDynamicValue(ctx => {
-                if(result === undefined) {
-                    result = binder(this.app)
-                }
-                return result;
-            })
-        }
+export function addPyroBlocks(wp:Webpacker) {
+    wp.blocks.pyrocms = {
+        asdf() {}
     }
 }

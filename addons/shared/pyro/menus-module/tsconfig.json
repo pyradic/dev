@@ -10,6 +10,6 @@
             "@pyro/admin-theme": ["../admin-theme/lib"]
         }
     },
-    "include": ["lib","lib/menus"],
+    "include": ["lib","lib/menus.production.ts"],
     "exclude": [ "node_modules","resources", "../select2-field_type", "../clients-module", "../core-module", "../menus-module"]
 }

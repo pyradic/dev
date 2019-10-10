@@ -1,5 +1,8 @@
 {
     "name": "@examples/ex2",
+    "version": "1.0.0",
+    "scripts": {},
+    "main": "resources/js/addon.js",
     "pyro": {
         "srcPath": "lib",
         "entry": {
@@ -7,11 +10,10 @@
             "production": "ex2.production.ts"
         }
     },
-    "version": "1.0.0",
-    "scripts": {},
     "dependencies": {
-        "@pyro/platform": "^1.0.0"
+        "@pyro/admin-theme": "^1.0.0",
+        "@pyro/platform": "^1.0.0",
+        "qs": "^6.9.0"
     },
-    "devDependencies": {
-    }
+    "devDependencies": {}
 }

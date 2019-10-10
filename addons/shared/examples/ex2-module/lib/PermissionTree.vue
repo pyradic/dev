@@ -1,67 +1,3 @@
-<style lang="scss" scoped>
-    .permissions {
-
-    }
-
-    .controls {
-        background: rgba(0, 0, 0, 0.1);
-    }
-
-    .control {
-
-    }
-
-
-</style>
-<style lang="scss">
-    .permissions {
-
-        label {
-            margin-bottom: 0; // reset 0.5rem by bootstrap reboot
-        }
-
-        .permission-tree {
-            .text-addon {
-                color: #0b2e13;
-                font-size: 12px;
-                font-weight: bold;
-            }
-
-            .text-stream {
-                /*color: #0098ca;*/
-                font-size: 12px;
-                font-weight: bold;
-            }
-
-            .text-permission {
-
-                font-size: 12px;
-            }
-        }
-
-        .permission-tree--compact {
-            .addon-child-texts {
-                font-size: 12px;
-            }
-
-            .text-stream {
-                color: #0098ca;
-                font-size: 11px;
-                min-width: 100px;
-                background: #bfe0ff;
-                padding: 2px 10px 2px 5px;
-                display: inline-block;
-                text-align: right;
-                font-weight: initial;
-            }
-
-            .text-permission {
-                font-size: 13px;
-                padding: 2px 10px;
-            }
-        }
-    }
-</style>
 <template>
     <div class="card permissions">
         <input type="hidden" ref="input"></input>
@@ -99,10 +35,11 @@
 <script lang="ts">
 
     import Vue, { CreateElement } from 'vue';
-    import { app, component } from '@pyro/platform';
-    import { Button, Checkbox, Col, Icon, Input, Row, Tree } from 'element-ui';
+    import { app, component, prop } from '@pyro/platform';
+    import { Button, Checkbox, Col, Icon, Input, Notification, Row, Tree } from 'element-ui';
     import { AddonPermission, AddonPermissions } from './interfaces';
     import { TreeData, TreeNode } from 'element-ui/types/tree';
+    import qs from 'qs';
 
     export interface Data extends TreeData, AddonPermission.Stream, AddonPermission.Stream.Permission {
         type: string
@@ -133,8 +70,10 @@
         }
     })
     export default class PermissionTree extends Vue {
-        name                                 = 'permission-tree'
+        name = 'permission-tree'
         $refs: { tree: Tree, input: HTMLInputElement }
+        @prop.string() connectForm: string
+
         dataCompact: any                     = [];
         dataExpanded: any                    = []
         dataViewType: PermissionTreeViewType = 'compact'
@@ -157,19 +96,91 @@
             }
         }
 
-
         get isCompact() {return this.dataViewType === 'compact'}
+
+        get form(): HTMLFormElement {
+            if ( this.connectForm !== undefined ) {
+                return document.querySelector(this.connectForm)
+            }
+        }
+
+        get hasForm() { return this.form !== undefined }
 
         created() {
             window[ '$tree' ] = this
             this.permissions  = {}
             this.setDataFromPermissions(app().get<AddonPermissions>('ex2.permissions'));
-            this.dataViewType     = this.$py.storage.get('ex2.permissions.dataViewType', 'compact');
-            this.defaultExpandAll = this.$py.storage.get('ex2.permissions.defaultExpandAll', true);
+            this.dataViewType     = this.$py.cookies.get('ex2.permissions.dataViewType', 'compact');
+            this.defaultExpandAll = this.$py.cookies.get('ex2.permissions.defaultExpandAll', false);
         }
 
         mounted() {
             this.originalCheckboxes = this.findOriginalCheckboxes()
+        }
+
+        saving: Promise<any>;
+        queuedSave: any;
+
+        async save() {
+            if ( !this.hasForm ) {
+                return console.warn('Cannot save() the permission-tree, no form has been connected.')
+            }
+            let formData = this.collectFormData();
+            this.$log('save', {...formData})
+            if ( this.saving ) {
+                this.queuedSave = formData
+                this.$log('save', 'already saving. setted new queued save')
+                return;
+            }
+            this.saving  = this.saveUntilDone(formData)
+            let response = await this.saving;
+            this.saving  = null;
+            Notification.success({
+                title   : null,
+                message : 'Permissions saved!',
+                position: 'bottom-right'
+            })
+            return response;
+        }
+
+        protected async saveUntilDone(formData: object) {
+            return this.postSave(formData).then(response => {
+                if ( this.queuedSave ) {
+                    let formData    = this.queuedSave
+                    this.queuedSave = null
+                    return this.saveUntilDone(formData);
+                }
+                return response;
+            });
+        }
+
+        protected async postSave(formData: object) {
+            let data     = qs.stringify(formData, {});
+            let url      = this.form.getAttribute('action');
+            let response = await this.$py.http.request({
+                url, data,
+                method : 'post',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            })
+            return response;
+        }
+
+        protected collectFormData() {
+            let data = {};
+            for ( let i = 0; i < this.form.elements.length; i ++ ) {
+                let input = this.form.elements.item(i) as HTMLInputElement;
+                if ( !input.checked || input.name === '' ) {
+                    continue;
+                }
+                if ( typeof data[ input.name ] === 'undefined' ) {
+                    data[ input.name ] = [];
+                }
+                data[ input.name ].push(input.value);
+            }
+            data[ '_token' ] = this.form.elements[ '_token' ].value
+            data[ 'action' ] = 'save';
+            this.$log('collectFormData', data);
+            return data;
         }
 
         findOriginalCheckboxes(): OriginalCheckboxes {
@@ -180,16 +191,17 @@
                 .map(el => ({ name: el.name, value: el.value, checked: el.checked, el }))
         }
 
-        handleCheck(data:Data, other){
-            log('handleCheck', {  data, other })
+        handleCheck(data: Data, other) {
+            log('handleCheck', { data, other })
             // const node = this.tree.getNode(data.key) as any
             // this.handleNodeClick(data, node, this.tree);
         }
+
         handleNodeClick(data: Data, node: TreeNode<any, Data>, component: Tree) {
             log('handleNodeClick', { data, node, component })
             if ( data.type === 'permission' ) {
                 let checked = !node.checked
-                this.tree.setChecked(data as any, checked,true)
+                this.tree.setChecked(data as any, checked, true)
             } else if ( data.type === 'addon' ) {
                 node.expanded = !node.expanded
             } else if ( data.type === 'stream' && this.isCompact === false ) {
@@ -204,10 +216,11 @@
                 this.permissions[ data.key ].enabled = checked
                 this.defaultEnabledKeys              = this.getEnabledPermissions().map((p: any) => p.key)
                 this.updateOriginalCheckboxByNode(data, checked);
+                this.save();
             }
         }
 
-        updateOriginalCheckboxByNode(data:Data, checked) {
+        updateOriginalCheckboxByNode(data: Data, checked) {
             let name             = data.stream.field + '[]';
             let value            = data.key;
             let originalCheckbox = this.originalCheckboxes.find(c => c.name === name && c.value === value);
@@ -244,12 +257,12 @@
         }
 
         expandAll() {
-            this.$py.storage.set('ex2.permissions.defaultExpandAll', true)
+            this.$py.cookies.set('ex2.permissions.defaultExpandAll', true)
             this.tree.store._getAllNodes().forEach(node => node.expanded = true)
         }
 
         collapseAll() {
-            this.$py.storage.set('ex2.permissions.defaultExpandAll', false)
+            this.$py.cookies.set('ex2.permissions.defaultExpandAll', false)
             this.tree.store._getAllNodes().forEach(node => node.expanded = false)
         }
 
@@ -257,7 +270,7 @@
             let dataViewType: PermissionTreeViewType = this.dataViewType === 'expanded' ? 'compact' : 'expanded';
             log('switchDataViewType', 'from:', this.dataViewType, '  to', dataViewType)
             this.dataViewType = dataViewType;
-            this.$py.storage.set('ex2.permissions.dataViewType', dataViewType)
+            this.$py.cookies.set('ex2.permissions.dataViewType', dataViewType)
             if ( event ) {
                 let el = event.target as HTMLButtonElement
                 el.blur();

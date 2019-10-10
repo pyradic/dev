@@ -1,26 +1,32 @@
 {
-    "platform": {
+    "pyro__platform": {
         "scripts": [
-            "http://pyro.local:8079/js/platform.js"
+            "http://pyro.local:8079/js/pyro__platform.js"
         ],
         "styles": []
     },
-    "ex2": {
+    "examples__ex2": {
         "scripts": [
-            "http://pyro.local:8079/js/ex2.js"
+            "http://pyro.local:8079/js/examples__ex2.js",
+            "http://pyro.local:8079/examples__ex2.d171c04ab6ea913a0436.hot-update.js"
         ],
         "styles": []
     },
-    "admin_theme": {
+    "pyro__admin_theme": {
         "scripts": [
-            "http://pyro.local:8079/js/admin_theme.js"
+            "http://pyro.local:8079/js/pyro__admin_theme.js"
         ],
         "styles": []
     },
-    "menus": {
+    "pyro__menus": {
         "scripts": [
-            "http://pyro.local:8079/js/menus.js",
-            "http://pyro.local:8079/menus.06177daa07fa417b03c2.hot-update.js"
+            "http://pyro.local:8079/js/pyro__menus.js"
+        ],
+        "styles": []
+    },
+    "vendor": {
+        "scripts": [
+            "http://pyro.local:8079/js/vendor.js"
         ],
         "styles": []
     }

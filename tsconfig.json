@@ -9,7 +9,6 @@
         "checkJs": false,
         "jsx": "preserve",
         "jsxFactory": "h",
-        "strict": false,
         "noImplicitAny": false,
         "strictNullChecks": false,
         "strictFunctionTypes": false,
@@ -30,6 +29,8 @@
         "emitDecoratorMetadata": true
     },
     "include": [
+        "globals.d.ts",
+        "ExtraTemplatedPathsPlugin.ts",
         "test.ts",
         "utils.ts",
         "webpack.config.ts"
