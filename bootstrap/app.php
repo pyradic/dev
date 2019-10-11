@@ -35,7 +35,7 @@ $app->singleton(
 
 $app->singleton(
     Illuminate\Contracts\Console\Kernel::class,
-    Pyradic\Platform\Console\Kernel::class //'Anomaly\Streams\Platform\Console\Kernel'
+    Pyro\Platform\Console\Kernel::class //'Anomaly\Streams\Platform\Console\Kernel'
 );
 
 $app->singleton(

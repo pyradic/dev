@@ -5,10 +5,10 @@ namespace Pyro\MenusModule\Menu\Command;
 
 use Anomaly\Streams\Platform\Support\Collection;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Pyradic\Platform\TreeNode\NodeInterface;
 use Pyro\MenusModule\Link\Command\GetLinks;
 use Pyro\MenusModule\Link\LinkCollection;
 use Pyro\MenusModule\Menu\MenuNode;
+use Pyro\Platform\TreeNode\NodeInterface;
 
 class BuildMenuNode
 {

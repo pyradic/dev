@@ -3,15 +3,14 @@
 namespace App;
 
 use Anomaly\Streams\Platform\Addon\AddonCollection;
-use Anomaly\Streams\Platform\Addon\Theme\ThemeCollection;
 use Anomaly\Streams\Platform\Application\Application;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Pyradic\IdeHelper\Command\GenerateCompletion;
-use Pyradic\Platform\Bus\Dispatcher;
-use Pyradic\Platform\Command\GatherJavascriptData;
-use Pyro\MenusModule\Link\Tree\LinkTreeBuilder;
-use Pyro\MenusModule\Menu\Contract\MenuRepositoryInterface;
+use Laradic\Idea\CompletionGenerator;
+use Pyro\IdeHelper\Command\GenerateEntryDomainsCompletion;
+use Pyro\IdeHelper\Completion\EntryDomainsCompletion;
+use Pyro\Platform\Bus\Dispatcher;
+use Pyro\Platform\Command\GatherJavascriptData;
 
 class TestCommand extends Command
 {
@@ -19,14 +18,10 @@ class TestCommand extends Command
 
     protected $signature = 'test';
 
-    public function handle(LinkTreeBuilder $builder, MenuRepositoryInterface $menus, ThemeCollection $themes)
+    public function handle(CompletionGenerator $generator)
     {
+        $g=$generator->append(EntryDomainsCompletion::class)->generate();
 
-        $themes->admin()->first()->setActive(true);
-        auth()->loginUsingId(1);
-        $menu = $menus->findBySlug('footer');
-        $builder->setMenu($menu);
-        $builder->render();
         return;
     }
 
@@ -38,7 +33,7 @@ class TestCommand extends Command
         $data = $this->dispatchNow(new GatherJavascriptData());
 //        $this->dispatchNow(new ProcessAddonServiceProvider());
 //        Request::isMethod('GET')
-        $c = $this->dispatchNow(new GenerateCompletion('._pyro-completion.php'));
+        $c = $this->dispatchNow(new GenerateEntryDomainsCompletion('._pyro-completion.php'));
 
         $this->line('Generated <comment>._pyro-completion.php</comment>');
     }

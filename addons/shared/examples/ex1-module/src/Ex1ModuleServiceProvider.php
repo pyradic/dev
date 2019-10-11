@@ -3,13 +3,14 @@
 
 use Anomaly\Streams\Platform\Addon\AddonServiceProvider;
 use Anomaly\Streams\Platform\Addon\Module\ModuleCollection;
+use Anomaly\Streams\Platform\Entry\Event\GatherParserData;
 use Anomaly\UsersModule\User\Form\UserFormBuilder;
 use Examples\Ex1Module\Department\Contract\DepartmentInterface;
 use Examples\Ex1Module\Department\Contract\DepartmentRepositoryInterface;
 use Examples\Ex1Module\Department\DepartmentModel;
 use Examples\Ex1Module\Department\DepartmentRepository;
 use Illuminate\Routing\Router;
-use Pyradic\Platform\Ui\Form\FormUtil;
+use Pyro\Platform\Ui\Form\FormUtil;
 
 class Ex1ModuleServiceProvider extends AddonServiceProvider
 {
@@ -23,6 +24,20 @@ class Ex1ModuleServiceProvider extends AddonServiceProvider
 
     public function register()
     {
+        // stream compile entry model template
+        $this->app->events->listen(GatherParserData::class, function (GatherParserData $event) {
+            $data   = $event->getData();
+            $stream = $event->getStream();
+            $data->put('template', file_get_contents(__DIR__ . '/Entry/entry.stub'));
+            $relations = $data->get('relations');
+
+            if ($stream->getNamespace() === 'users' && $stream->getSlug() === 'users') {
+                $with = str_replace('[', "['department'", $data->get('with', '[]'));
+                $data->put('with', $with);
+                return;
+            }
+            return;
+        });
     }
 
     public function boot(ModuleCollection $modules, UserFormBuilder $builder)

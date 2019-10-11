@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Closure;
-use Pyradic\Platform\Bus\CommandInspector;
+use Pyro\Platform\Bus\CommandInspector;
 
 class WrapDispatchedCommand
 {

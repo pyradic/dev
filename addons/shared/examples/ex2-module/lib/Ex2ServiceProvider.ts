@@ -1,10 +1,8 @@
 import './ex2.scss';
 import { ServiceProvider } from '@pyro/platform';
-import '@pyro/admin-theme'
 import * as admin from '@pyro/admin-theme'
 import { debug } from 'debug';
 import Ex2VuePlugin from './Ex2VuePlugin';
-const a = require('../../../pyro/admin-theme/lib/admin.ts');
 const log = debug('ex2');
 
 
@@ -16,7 +14,6 @@ export class Ex2ServiceProvider extends ServiceProvider {
             Vue.use(Ex2VuePlugin)
         });
         console.log('admin',admin)
-        console.log('a',a)
     }
 }
 

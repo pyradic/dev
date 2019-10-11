@@ -1,14 +1,15 @@
 {
     "pyro__platform": {
         "scripts": [
-            "http://pyro.local:8079/js/pyro__platform.js"
+            "http://pyro.local:8079/js/pyro__platform.js",
+            "http://pyro.local:8079/pyro__platform.ac7f3621fb56bb78ea4c.hot-update.js"
         ],
         "styles": []
     },
     "examples__ex2": {
         "scripts": [
             "http://pyro.local:8079/js/examples__ex2.js",
-            "http://pyro.local:8079/examples__ex2.d171c04ab6ea913a0436.hot-update.js"
+            "http://pyro.local:8079/examples__ex2.ac7f3621fb56bb78ea4c.hot-update.js"
         ],
         "styles": []
     },

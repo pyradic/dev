@@ -1,9 +1,5 @@
 <?php
 
-use Laradic\Idea\IdeaServiceProvider;
-use Laradic\Support\SupportServiceProvider;
-use Pyradic\CustomInstall\CustomInstallServiceProvider;
-
 return [
     'name' => env('APP_NAME', 'My Application'),
     'env' => env('APP_ENV', 'production'),
@@ -81,7 +77,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Pyradic\Platform\PlatformServiceProvider::class,
+        Pyro\Platform\PlatformServiceProvider::class,
         Anomaly\Streams\Platform\StreamsServiceProvider::class,
 
 //        Pyradic\CustomInstall\CustomInstallServiceProvider::class

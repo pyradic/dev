@@ -1,9 +1,9 @@
 <?php
 
-use Pyro\MenusModule\MenuModuleSeederHelper;
 use Anomaly\Streams\Platform\Model\EloquentModel;
+use Pyro\MenusModule\MenuModuleSeederHelper;
 
-class MenuSeeder extends \Pyradic\Platform\Database\Seeder
+class MenuSeeder extends \Pyro\Platform\Database\Seeder
 {
     /** @var \Pyro\MenusModule\MenuModuleSeederHelper */
     protected $helper;

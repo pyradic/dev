@@ -2,7 +2,7 @@
 
 namespace Pyro\MenusModule\Link;
 
-use Pyradic\Platform\TreeNode\ModelNode;
+use Pyro\Platform\TreeNode\ModelNode;
 
 /**
  * @method \Pyro\MenusModule\Link\LinkModel|\Pyro\MenusModule\Link\Contract\LinkInterface|\Pyro\MenusModule\Link\LinkPresenter getValue()

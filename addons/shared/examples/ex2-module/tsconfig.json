@@ -7,7 +7,7 @@
             "../../../../node_modules/@types"
         ],
         "paths": {
-            "@pyro/admin-theme": ["../../pyro/admin-theme/lib/admin.ts"]
+            "@pyro/admin-theme": ["../../pyro/admin-theme/lib/admin-theme.ts"]
         }
     },
     "include": ["lib"],

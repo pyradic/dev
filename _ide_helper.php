@@ -2645,7 +2645,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function dispatchNow($command, $handler = null)
         {
-                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
+                        /** @var \Pyro\Platform\Bus\Dispatcher $instance */
                         return $instance->dispatchNow($command, $handler);
         }
 
@@ -2656,7 +2656,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function before($command, $listener = null)
         {
-                        return \Pyradic\Platform\Bus\Dispatcher::before($command, $listener);
+                        return \Pyro\Platform\Bus\Dispatcher::before($command, $listener);
         }
 
         /**
@@ -2676,7 +2676,7 @@ namespace Illuminate\Support\Facades {
          */
         public static function after($command, $listener = null)
         {
-                        \Pyradic\Platform\Bus\Dispatcher::after($command, $listener);
+                        \Pyro\Platform\Bus\Dispatcher::after($command, $listener);
         }
 
         /**
@@ -2689,7 +2689,7 @@ namespace Illuminate\Support\Facades {
         public static function dispatch($command)
         {
             //Method inherited from \Illuminate\Bus\Dispatcher
-                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
+                        /** @var \Pyro\Platform\Bus\Dispatcher $instance */
                         return $instance->dispatch($command);
         }
 
@@ -2703,7 +2703,7 @@ namespace Illuminate\Support\Facades {
         public static function hasCommandHandler($command)
         {
             //Method inherited from \Illuminate\Bus\Dispatcher
-                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
+                        /** @var \Pyro\Platform\Bus\Dispatcher $instance */
                         return $instance->hasCommandHandler($command);
         }
 
@@ -2717,7 +2717,7 @@ namespace Illuminate\Support\Facades {
         public static function getCommandHandler($command)
         {
             //Method inherited from \Illuminate\Bus\Dispatcher
-                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
+                        /** @var \Pyro\Platform\Bus\Dispatcher $instance */
                         return $instance->getCommandHandler($command);
         }
 
@@ -2732,7 +2732,7 @@ namespace Illuminate\Support\Facades {
         public static function dispatchToQueue($command)
         {
             //Method inherited from \Illuminate\Bus\Dispatcher
-                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
+                        /** @var \Pyro\Platform\Bus\Dispatcher $instance */
                         return $instance->dispatchToQueue($command);
         }
 
@@ -2740,13 +2740,14 @@ namespace Illuminate\Support\Facades {
          * Set the pipes through which commands should be piped before dispatching.
          *
          * @param array $pipes
-         * @return \Pyradic\Platform\Bus\Dispatcher
+         *
+         * @return \Pyro\Platform\Bus\Dispatcher
          * @static
          */
         public static function pipeThrough($pipes)
         {
             //Method inherited from \Illuminate\Bus\Dispatcher
-                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
+                        /** @var \Pyro\Platform\Bus\Dispatcher $instance */
                         return $instance->pipeThrough($pipes);
         }
 
@@ -2754,13 +2755,14 @@ namespace Illuminate\Support\Facades {
          * Map a command to a handler.
          *
          * @param array $map
-         * @return \Pyradic\Platform\Bus\Dispatcher
+         *
+         * @return \Pyro\Platform\Bus\Dispatcher
          * @static
          */
         public static function map($map)
         {
             //Method inherited from \Illuminate\Bus\Dispatcher
-                        /** @var \Pyradic\Platform\Bus\Dispatcher $instance */
+                        /** @var \Pyro\Platform\Bus\Dispatcher $instance */
                         return $instance->map($map);
         }
 
