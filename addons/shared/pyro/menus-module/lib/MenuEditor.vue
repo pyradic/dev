@@ -1,4 +1,3 @@
-
 <template>
     <el-container :class="classes">
         <el-container class="py-me__tree" ref="tree">
@@ -7,6 +6,7 @@
         <el-aside :width="sideWidth" class="py-me__side" ref="side">
             <div class="card">
                 <div class="card-header">
+                    <button class="btn btn-sm btn-default" type="button" style="float: right;" v-if="side.content === 'form'" @click="showList">X</button>
                     <h5 class="card-title" v-if="side.content === 'form' && form.mode === 'create'">Create</h5>
                     <h5 class="card-title" v-else-if="side.content === 'form' && form.mode === 'edit'">Edit</h5>
                     <h5 class="card-title" v-else>Add item</h5>
@@ -64,10 +64,6 @@
     import { Aside as ElAside, Container as ElContainer, Dialog as ElDialog, Main as ElMain, Notification } from 'element-ui'
     import { MenuType } from './interfaces';
 
-    function applySortable() {
-        // require('')
-    }
-
     export interface MenuEditorHideables {
         tree: boolean
         form: boolean
@@ -94,9 +90,9 @@
 
         types: MenuType[]            = []
         urls: Record<string, string> = {}
-        expanded                     = false;
-        expandPercentage             = 70;
-        collapsedPercentage          = 25;
+
+        expandPercentage    = 70;
+        collapsedPercentage = 25;
 
         side: IMenuEditorSide = {
             expanded: false,
@@ -116,14 +112,16 @@
 
         get tree(): ElContainer {return this.$refs.tree}
 
-        get $tree(): JQuery<Element> {return $(this.tree.$el) }
+        get $tree(): JQuery {return $(this.tree.$el) as any}
 
         get classes() {
             return {
                 [ this.classPrefix ]                 : true,
                 [ `${this.classPrefix}--compact` ]   : this.compact,
                 [ `${this.classPrefix}--scrollable` ]: this.scrollable,
-                [ `${this.classPrefix}--expanded` ]  : this.expanded
+                [ `${this.classPrefix}--expanded` ]  : this.side.expanded,
+                [ `${this.classPrefix}--collapsed` ] : !this.side.expanded,
+                [ `has-${this.side.content}` ]       : true
             }
         }
 
@@ -134,7 +132,7 @@
         }
 
         mounted() {
-            this.reloadTree(false).then(() => this.bindTree())
+            this.reloadTree(false)
         }
 
         expand() {
@@ -148,12 +146,14 @@
         }
 
         showList() {
+            this.$log('showList')
             this.side.content  = 'list'
             this.side.expanded = false
             return this;
         }
 
         showForm(mode: IMenuEditorForm['mode'], slug: string, id?: number) {
+            this.$log('showForm')
             this.form.mode     = mode;
             this.form.slug     = slug;
             this.form.id       = id;
@@ -163,12 +163,17 @@
         }
 
 
-        onListItemClick(type:MenuType) {
-            this.$log('onListItemClick',type)
+        onListItemClick(type: MenuType) {
+            this.$log('onListItemClick', type)
             this.showForm('create', type.slug)
         }
 
         onTreeitemClick(slug, id) {
+            this.$log('onTreeitemClick', '  slug:', slug, '  id:', id)
+            if ( this.side.content === 'form' ) {
+                this.showList();
+                return this.$nextTick(() => this.showForm('edit', slug, id))
+            }
             this.showForm('edit', slug, id)
         }
 
@@ -202,6 +207,11 @@
         }
 
         bindTree() {
+            const $tree = this.$tree.find('ul.tree');
+            if ( $tree.data('bound') ) {
+                return this.$log('bindTree already bound')
+            }
+            $tree.data('bound', true);
             const $links       = this.$tree.find('li > .card > a')
             const $buttons     = this.$tree.find('li > .card > .buttons')
             const $buttonLinks = this.$tree.find('li > .card > .buttons > a')
@@ -210,6 +220,10 @@
             const $deletes     = $buttons.find('a[data-action="delete"]')
             const self         = this;
             this.$log('bindTree', { $links, $buttons, $adds, $views, $deletes, self })
+            console.groupCollapsed('bindTree trace')
+            console.trace('bindTree trace')
+            console.groupEnd();
+
             $buttonLinks.not('[data-action="view"]').on('click', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -226,11 +240,11 @@
             $links.on('click', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-                const $el  = $(this);
+                const $el    = $(this);
                 // const type = self.types[ $el.data('type') ];
-                const id   = parseInt($el.closest('li').data('id'));
-                let {type} = $el.data();
-                self.$log('$links click', {$el,type,id,data:$el.data()});
+                const id     = parseInt($el.closest('li').data('id'));
+                let { type } = $el.data();
+                self.$log('$links click', { $el, type, id, data: $el.data() });
                 self.onTreeitemClick(type, id)
             });
         }

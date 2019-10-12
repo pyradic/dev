@@ -4,10 +4,41 @@
 $menu-editor-prefix: #{$prefix}-me;
 
 .#{$menu-editor-prefix} {
+    $self: &;
+
+    &.has-list {
+        .#{$menu-editor-prefix}__tree {
+            ul.tree .card:hover > .buttons {
+                display: flex;
+            }
+
+            ul.tree .card:hover .#{$menu-editor-prefix}__tree-item-tag {
+                display: none;
+            }
+        }
+    }
+
+    &.has-form {
+        .#{$menu-editor-prefix}__tree {
+            ul.tree .card:hover > .buttons {
+                display: none;
+            }
+
+            //ul.tree .card:hover .#{$menu-editor-prefix}__tree-item-tag {
+            //    display: none;
+            //}
+        }
+    }
+
     &__tree {
         > .container-fluid {
             margin: 0;
             width: 100%;
+        }
+
+        ul.tree li .card:hover {
+            background-color: #f3f3f3;
+            box-shadow: 1px 1px 0 rgba(66,66,66,0.2);
         }
 
         .tree .card {
@@ -26,13 +57,6 @@ $menu-editor-prefix: #{$prefix}-me;
             }
         }
 
-        ul.tree .card:hover > .buttons {
-            display: flex;
-        }
-
-        ul.tree .card:hover &-item-tag {
-            display: none;
-        }
     }
 
     &__tree-item-tag {
@@ -144,6 +168,7 @@ $class-prefix: #{$prefix}-menus;
             ul.tree .card:hover &-item-tag {
                 display: none;
             }
+
             &-item-tag {
                 padding: 4px 0 0;
                 float: right;
@@ -155,12 +180,14 @@ $class-prefix: #{$prefix}-menus;
                     height: 17px;
                     border-radius: 0;
                 }
+
                 small,
                 .small {
                     font-size: 11px;
                     padding: 3px 10px;
                     text-transform: uppercase;
                 }
+
                 .info-tag {
                     font-weight: normal;
                     font-size: 9px;
@@ -172,7 +199,7 @@ $class-prefix: #{$prefix}-menus;
         &-side {
             background-color: white;
             height: 100%;
-            padding:15px;
+            padding: 15px;
             //padding-top: $grid-gutter-width / 2;
             //padding-bottom: $grid-gutter-width / 2;
 

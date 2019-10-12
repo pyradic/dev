@@ -71,7 +71,7 @@ export function setupWebpacker(path) {
     });
     rules.stylus(wp);
     rules.images(wp);
-    rules.fonts(wp, {});
+    rules.fonts(wp, { publicPath: '/assets/fonts/' });
     rules.vue(wp);
     rules.pug(wp);
 
@@ -108,9 +108,9 @@ export function setupWebpacker(path) {
             camel2DashComponentName: true,
 
             style: (path: string) => {
-                process.stderr.write('element ui style path: ' + path);
+                // process.stderr.write('element ui style path: ' + path);
                 let out = join('node_modules', 'element-theme-scss', 'src', `${camel2Dash(basename(path, '.js'))}.scss`);
-                process.stderr.write('element ui out: ' + out);
+                // process.stderr.write('element ui out: ' + out);
                 return out;
             }
         }
@@ -141,7 +141,7 @@ export function setupWebpacker(path) {
     wp.resolve.alias.merge({
         'jquery$'                            : 'jquery/src/jquery',
         'quasar$'                            : 'quasar/dist/quasar.esm.js',
-        'vue$'                               : 'vue/dist/vue.esm.js',
+        // 'vue$'                               : 'vue/dist/vue.esm.js',
         'babel-core$'                        : '@babel/core',
         'select2$'                           : wp.isProd ? 'select2/dist/js/select2.min.js' : 'select2/dist/js/select2.full.js',
         // './../utilities'                     : 'packages/pyradic/platform/lib/vendor/utilities.js'),
@@ -155,11 +155,11 @@ export function setupWebpacker(path) {
     });
 
     wp.externals({
-        'jquery'   : 'jQuery',
-        // 'vue'                   : 'Vue',
-        // 'vue-class-component'   : 'VueClassComponent',
-        // 'vue-property-decorator': 'vue-property-decorator',
-        'bootstrap': 'jQuery'
+        'jquery'                : 'jQuery',
+        'vue'                   : 'Vue',
+        'vue-class-component'   : 'VueClassComponent',
+        'vue-property-decorator': 'vue-property-decorator',
+        'bootstrap'             : 'jQuery'
         // '@pyro/admin'   : [ 'pyro', 'admin' ],
         // '@pyro/platform': [ 'pyro', 'platform' ],
         // '@pyro/ex2'     : [ 'pyro', 'ex2' ],
@@ -174,6 +174,29 @@ export function setupWebpacker(path) {
 
     return wp;
 }
+
+export function getTemplatedPathOptions(addons: Addon[]) {
+    let templatedPaths = {
+        templates: {
+            addon: (c, p) => {
+                let addon = addons.find(a => a.entryName === c.chunkName);
+                if ( !addon ) {
+                    return false;
+                }
+                if ( !p.hasArg ) {
+                    return addon.path;
+                }
+                if ( typeof addon[ p.arg ] === 'string' ) {
+                    return addon[ p.arg ];
+                }
+                return false;
+            }
+        }
+    }
+    return templatedPaths;
+}
+
+// plugins.templatedPath = Webpacker.plugin('templated-path', (w, p) => [])
 
 export class Addon {
     pkg: PackageJson;

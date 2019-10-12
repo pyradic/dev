@@ -10,13 +10,21 @@
 <script lang="ts">
     import $ from 'jquery'
     import { Component, component, prop } from '@pyro/platform';
-    import { MenuEditorMode, MenuType } from './interfaces';
+    import { AxiosResponse } from 'axios'
 
+    export interface AjaxFormData {
+        css: string
+        js: string
+        form: string
+    }
+
+    export type AjaxFormResponse = AxiosResponse<AjaxFormData>
+    export { AxiosResponse }
     @component()
     export default class MenuEditorForm extends Component {
         @prop.classPrefix('me__form') classPrefix: string
-        @prop.string.required() mode: 'create'|'edit'
-        @prop.string.required() slug:string
+        @prop.string.required() mode: 'create' | 'edit'
+        @prop.string.required() slug: string
         @prop.number() id: number
         @prop.number() parent: number
         @prop.boolean() hide: boolean
@@ -38,8 +46,8 @@
         }
 
         created() {
-            this.urls = this.$py.data.get('pyro.menus.urls');
-            window['$menuForm'] = this;
+            this.urls             = this.$py.data.get('pyro.menus.urls');
+            window[ '$menuForm' ] = this;
         }
 
         mounted() {
@@ -55,29 +63,57 @@
         }
 
         async showCreate() {
-            if(this.loading){
+            if ( this.loading ) {
                 return;
             }
             this.setLoading(true)
             let url = this.urls.create + '/' + this.slug;
-            if(this.id){
+            if ( this.id ) {
                 url += '/' + this.id;
             }
-            const form = await this.$http.get(url)
-            this.$log('showCreate', form, this.urls)
-            $(this.$el).html(form.data);
+            const res: AjaxFormResponse = await this.$http.get<any, AjaxFormResponse>(url)
+            this.$log('showCreate', res, this.urls)
+            this.setForm(res);
+        }
+
+        formStyle: HTMLStyleElement
+        formScript: HTMLScriptElement
+
+        unsetForm() {
+            if ( this.formStyle ) {
+                this.formStyle.remove();
+                this.formStyle = null;
+            }
+            if ( this.formScript ) {
+                this.formScript.remove();
+                this.formScript = null;
+            }
+        }
+
+        setForm(res: AjaxFormResponse) {
+            this.unsetForm();
+
+            this.formStyle             = document.createElement('style');
+            this.formStyle.textContent = res.data.css;
+            document.head.append(this.formStyle)
+
+            $(this.$el).html(res.data.form);
+
+            this.formScript             = document.createElement('script');
+            this.formScript.textContent = res.data.js;
+            document.body.append(this.formScript)
+
             return this.bind()
         }
 
         async showEdit() {
-            if(this.loading){
+            if ( this.loading ) {
                 return;
             }
             this.setLoading(true)
-            const form = await this.$http.get(this.urls.edit + '/' + this.id)
-            this.$log('showEdit', form, this.urls)
-            $(this.$el).html(form.data);
-            return this.bind()
+            const res = await this.$http.get<any, AjaxFormResponse>(this.urls.edit + '/' + this.id)
+            this.$log('showEdit', res, this.urls)
+            this.setForm(res);
         }
 
         async bind() {
@@ -112,7 +148,7 @@
                 const serialized = $form.serializeArray();
                 serialized.forEach(item => data[ item.name ] = item.value)
                 this.$emit('submit', data)
-                this.$log('submitForm', { method, data, responseType: 'json', url: action, self:this })
+                this.$log('submitForm', { method, data, responseType: 'json', url: action, self: this })
                 const response = await this.$http.request({ method, data, responseType: 'json', url: action })
                 this.$log('submitForm', { response })
                 // me.unblock('side')

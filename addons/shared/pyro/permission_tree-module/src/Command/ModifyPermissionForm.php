@@ -49,10 +49,18 @@ class ModifyPermissionForm
             })->toArray();
             return $addon;
         })->values()->toArray();
-        $assets->add('scripts.js', 'pyro.module.permission_tree::js/addon.js', [ 'webpack:permission-tree:scripts' ]);
-        app()->platform->addProvider('pyro.pyro__permission_tree.PermissionTreeServiceProvider');
-        app()->platform->getData()->set('ex2.permissions', $data);
-        $this->builder->addFormData('data', $data);
+
+
+        app()->platform
+            ->addPublicScript('assets/js/pyro__permission_tree.js')
+            ->addPublicStyle('assets/css/pyro__permission_tree.css')
+            ->addProvider('pyro.pyro__permission_tree.PermissionTreeServiceProvider')
+            ->set('permission_tree.permissions', $data);
+
+//        $assets->add('scripts.js', 'pyro.module.permission_tree::js/addon.js', [ 'webpack:permission-tree:scripts' ]);
+//        app()->platform->addProvider('pyro.pyro__permission_tree.PermissionTreeServiceProvider');
+//        app()->platform->getData()->set('ex2.permissions', $data);
+//        $this->builder->addFormData('data', $data);
     }
 
 }

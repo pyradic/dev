@@ -6,6 +6,7 @@ use Anomaly\Streams\Platform\Addon\Extension\ExtensionCollection;
 use Anomaly\Streams\Platform\Asset\Asset;
 use Anomaly\Streams\Platform\Http\Controller\AdminController;
 use Anomaly\Streams\Platform\Support\Authorizer;
+use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 use Pyro\MenusModule\Link\Contract\LinkInterface;
 use Pyro\MenusModule\Link\Contract\LinkRepositoryInterface;
@@ -18,6 +19,7 @@ use Pyro\MenusModule\Type\LinkTypeExtension;
 
 class AjaxLinksController extends AdminController
 {
+
 
     public function index(MenuRepositoryInterface $menus, ExtensionCollection $extensions, $menu = null)
     {
@@ -33,12 +35,12 @@ class AjaxLinksController extends AdminController
         /** @var \Anomaly\Streams\Platform\Ui\Tree\TreeBuilder $treeBuilder */
         $treeBuilder = $this->call('renderTree', compact('menu'));
         $tree        = $treeBuilder->getTreeContent();
-        if($isPost){
+        if ($isPost) {
             return $treeBuilder->render();
         }
         $menu_types = $extensions->search('pyro.module.menus::link_type.*')->enabled();
         $this->setPlatformData($menu, $menu_types);
-        return view('module::ajax_links', [ 'tree' => $tree, 'menu_types' => $menu_types,'menu' => $menu ]);
+        return view('module::ajax_links', [ 'tree' => $tree, 'menu_types' => $menu_types, 'menu' => $menu ]);
     }
 
     protected function setPlatformData(string $menuSlug, ExtensionCollection $menuTypes)
@@ -48,8 +50,8 @@ class AjaxLinksController extends AdminController
             $description = $type->getDescription();
             $namespace   = $type->getNamespace();
             $title       = $type->getTitle();
-            $slug = $type->getSlug();
-            return array_map('trans', compact('name', 'description', 'namespace', 'title','slug'));
+            $slug        = $type->getSlug();
+            return array_map('trans', compact('name', 'description', 'namespace', 'title', 'slug'));
         })->toArray();
 
         $urls = [
@@ -59,9 +61,11 @@ class AjaxLinksController extends AdminController
             'delete' => $this->url->to('admin/menus/links/delete'),
         ];
 
-        $platform = app()->platform;
-        $platform->addProvider('pyro.pyro__menus.MenusServiceProvider');
-        $platform->getData()->set('pyro.menus', compact('types', 'menuSlug', 'urls'));
+        $platform = app()->platform
+            ->addPublicScript('assets/js/pyro__menus.js')
+            ->addPublicStyle('assets/css/pyro__menus.css')
+            ->addProvider('pyro.pyro__menus.MenusServiceProvider')
+            ->set('pyro.menus', compact('types', 'menuSlug', 'urls'));
     }
 
     protected function call($method, $params = [])
@@ -93,6 +97,8 @@ class AjaxLinksController extends AdminController
             $menu = $menus->findBySlug((string)$menu);
         }
 
+        abort_if(!$menu, Response::HTTP_NOT_ACCEPTABLE, 'Could not find menu');
+
         $treeBuilder->setMenu($menu);
         $treeBuilder->render();
         return $treeBuilder;
@@ -108,11 +114,11 @@ class AjaxLinksController extends AdminController
         $tree        = $treeBuilder->getTreeContent();
         $treeJs      = $assets->content('tree');
 
-        $lines = Str::lines($treeJs);
-        $total = count($lines);
-        $lines[0] = '(function(){';
-        $lines[$total - 2] = '})()';
-        $treeJs = implode("\n", $lines);
+        $lines               = Str::lines($treeJs);
+        $total               = count($lines);
+        $lines[ 0 ]          = '(function(){';
+        $lines[ $total - 2 ] = '})()';
+        $treeJs              = implode("\n", $lines);
 
         $tree = "{$tree}<script>{$treeJs}</script>";
 
@@ -173,7 +179,24 @@ class AjaxLinksController extends AdminController
 
         $formBuilder->render();
         $content = $formBuilder->getFormContent();
-        $content = $this->addFormAssetsToContent($content);
+//        $content = $this->addFormAssetsToContent($content);
+
+        $assets = resolve(Asset::class);
+        $js     = $assets->has('scripts.js') ? $assets->content('scripts.js') : '';
+        $css    = $assets->has('styles.css') ? $assets->inline('styles.css') : '';
+        return response()->json([
+            'form' => $content->render(),
+            'css' => $css,
+            'js' => "
+(function(){
+    var module = {};
+
+    {$js}
+    ;
+
+}.call());                 
+            "
+        ]);
         return $content;
     }
 
@@ -181,21 +204,21 @@ class AjaxLinksController extends AdminController
     {
         $assets = resolve(Asset::class);
         $js     = $assets->has('scripts.js') ? $assets->content('scripts.js') : '';
-        $css    = $assets->has('styles.css') ? $assets->content('styles.css') : '';
+        $css    = $assets->has('styles.css') ? $assets->inline('styles.css') : '';
         return "
 <style type='text/css'>{$css}</style>
 
 {$content}
 
-<script>
+<py-script>
 (function(){
     var module = {};
-    
+
     {$js}
     ;
 
 }.call());     
- </script>";
+ </py-script>";
     }
 
     public function getEditForm(
@@ -225,7 +248,7 @@ class AjaxLinksController extends AdminController
             $linkFormBuilder->setEntry($id)->setType($entry->getType())->setMenu($menu = $menus->findBySlug($slug))
         );
 
-        $this->rebindAssetsForAjax();
+        $assets=$this->rebindAssetsForAjax();
 
         if ($isPost) {
             $formBuilder->setAjax(true);
@@ -235,8 +258,24 @@ class AjaxLinksController extends AdminController
 
         $formBuilder->render();
         $content = $formBuilder->getFormContent();
-        $content = $this->addFormAssetsToContent($content);
+//        $content = $this->addFormAssetsToContent($content);
 
+//        $assets = resolve(Asset::class);
+        $js     = $assets->has('scripts.js') ? $assets->content('scripts.js') : '';
+        $css    = $assets->has('styles.css') ? $assets->inline('styles.css') : '';
+        return response()->json([
+            'form' => $content->render(),
+            'css' => $css,
+            'js' => "
+(function(){
+    var module = {};
+
+    {$js}
+    ;
+
+}.call());                 
+            "
+        ]);
         return $content;
     }
 
@@ -291,7 +330,7 @@ class AjaxLinksController extends AdminController
         abort_unless($authorizer->authorize('pyro.module.menus::links.delete'), trans('streams::message.access_denied'));
         $links->forceDelete($links->find($this->route->parameter('id')));
 
-        if($this->request->expectsJson()) {
+        if ($this->request->expectsJson()) {
             return $this->response->json([
                 'success' => true,
             ]);

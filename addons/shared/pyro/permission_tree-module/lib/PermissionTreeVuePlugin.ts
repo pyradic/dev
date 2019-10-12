@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import { Application, prefixAndRegisterComponents } from '@pyro/platform';
 import PermissionTree from './PermissionTree.vue';
+import debug from 'debug';
 
-const log = require('debug')('install');
+const log = debug('permission_tree.PermissionTreeVuePlugin');
 
 export { PermissionTreeVuePlugin }
 

@@ -1,4 +1,11 @@
 import webpack, { ContentHash } from 'webpack'
+import webpacker from '@radic/webpacker'
+
+declare module '@radic/webpacker/lib/blocks/index' {
+    interface Plugins {
+        templatedPath: webpacker.PluginBlockFunction<any>
+    }
+}
 declare module 'webpack' {
 
     export interface ContentHash {

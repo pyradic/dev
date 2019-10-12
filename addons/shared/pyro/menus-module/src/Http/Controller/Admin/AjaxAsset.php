@@ -2,7 +2,9 @@
 
 namespace Pyro\MenusModule\Http\Controller\Admin;
 
-class AjaxAsset extends \Anomaly\Streams\Platform\Asset\Asset
+use Pyro\Platform\Asset\Asset;
+
+class AjaxAsset extends Asset
 {
     protected $RADIC = true;
 

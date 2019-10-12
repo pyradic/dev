@@ -109,9 +109,9 @@
         created() {
             window[ '$tree' ] = this
             this.permissions  = {}
-            this.setDataFromPermissions(app().get<AddonPermissions>('ex2.permissions'));
-            this.dataViewType     = this.$py.cookies.get('ex2.permissions.dataViewType', 'compact');
-            this.defaultExpandAll = this.$py.cookies.get('ex2.permissions.defaultExpandAll', false);
+            this.setDataFromPermissions(app().get<AddonPermissions>('permission_tree.permissions'));
+            this.dataViewType     = this.$py.cookies.get('permission_tree.permissions.dataViewType', 'compact');
+            this.defaultExpandAll = this.$py.cookies.get('permission_tree.permissions.defaultExpandAll', false);
         }
 
         mounted() {
@@ -257,12 +257,12 @@
         }
 
         expandAll() {
-            this.$py.cookies.set('ex2.permissions.defaultExpandAll', true)
+            this.$py.cookies.set('permission_tree.permissions.defaultExpandAll', true)
             this.tree.store._getAllNodes().forEach(node => node.expanded = true)
         }
 
         collapseAll() {
-            this.$py.cookies.set('ex2.permissions.defaultExpandAll', false)
+            this.$py.cookies.set('permission_tree.permissions.defaultExpandAll', false)
             this.tree.store._getAllNodes().forEach(node => node.expanded = false)
         }
 
@@ -270,7 +270,7 @@
             let dataViewType: PermissionTreeViewType = this.dataViewType === 'expanded' ? 'compact' : 'expanded';
             log('switchDataViewType', 'from:', this.dataViewType, '  to', dataViewType)
             this.dataViewType = dataViewType;
-            this.$py.cookies.set('ex2.permissions.dataViewType', dataViewType)
+            this.$py.cookies.set('permission_tree.permissions.dataViewType', dataViewType)
             if ( event ) {
                 let el = event.target as HTMLButtonElement
                 el.blur();

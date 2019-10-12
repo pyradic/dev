@@ -40,6 +40,7 @@ return [
     ],
 
 
+    'link'          => [ 'name'         => 'Module Section',],
     'title'          => [ 'name'         => 'Title',],
     'url'          => [ 'name'         => 'URL',]
 ];

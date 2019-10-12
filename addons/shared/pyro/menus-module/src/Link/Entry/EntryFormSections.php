@@ -29,6 +29,7 @@ class EntryFormSections
         $builder->setSections(
             [
                 'link' => [
+
                     'stacked'           => true,
                     'tabs' => [
                         'general' => [

@@ -28,7 +28,7 @@ class Ex1ModuleServiceProvider extends AddonServiceProvider
         $this->app->events->listen(GatherParserData::class, function (GatherParserData $event) {
             $data   = $event->getData();
             $stream = $event->getStream();
-            $data->put('template', file_get_contents(__DIR__ . '/Entry/entry.stub'));
+//            $data->put('template', file_get_contents(__DIR__ . '/Entry/entry.stub'));
             $relations = $data->get('relations');
 
             if ($stream->getNamespace() === 'users' && $stream->getSlug() === 'users') {
