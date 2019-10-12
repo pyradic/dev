@@ -3,7 +3,7 @@
     "workspaces": {
         "packages": [
             "addons/shared/*/*",
-            "packages/pyradic/platform"
+            "packages/pyro/platform"
         ]
     },
     "scripts": {

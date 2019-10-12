@@ -24,23 +24,16 @@ wp.output.library([ EXPORT_NAMESPACE, '[addon:entryName]' ] as any)
 //     .chunkFilename('js/[name].chunk.[id].js');
 
 
-// add platform core module entry point
-// wp.entry('platform').add(resolve(__dirname, `packages/pyradic/platform/lib/platform.${mode}.ts`));
-// // make it available to other addons
-// wp.externals({
-//     ...wp.get('externals'),
-//     '@pyro/platform': [ 'pyro', 'platform' ]
-// })
 
 
 // add all addon module entry points
 const finder        = AddonFinder.make([
-    'packages/pyradic/platform/package.json',
+    'packages/pyro/platform/package.json',
     'addons/shared/*/*/package.json',
     'addons/*/*/package.json'
 ])
 let addons: Addon[] = finder.find();
-// addons              = addons.filter(a => [ '@pyro/platform', '@examples/ex2', '@pyro/admin-theme' ].includes(a.name))
+
 for ( const addon of addons ) {
     // addon.add(wp)
     wp.externals({
@@ -48,12 +41,11 @@ for ( const addon of addons ) {
         [ addon.name ]: [ EXPORT_NAMESPACE, addon.entryName ]
     });
     // let p =addon.getRPath('resources')
-    // wp.resolve.alias.set(addon.name, p)
+    // wp.resolve.alias.set(addon.name, addon.entry.development)
     // wp.entry(addon.lastNameSnake).add(wp.isDev ? addon.entry.development : addon.entry.production);
     wp.entry(addon.entryName).add(addon.entry.development);
 }
 
-wp.entry('vendor').merge(['vue']);
 
 let templatedPaths: ExtraTemplatedPathsPluginOptions = {
     templates: {

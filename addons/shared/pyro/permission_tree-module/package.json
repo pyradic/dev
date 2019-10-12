@@ -1,13 +1,13 @@
 {
-    "name": "@examples/ex2",
+    "name": "@pyro/permission-tree",
     "version": "1.0.0",
     "scripts": {},
     "main": "resources/js/addon.js",
-    "pyro2": {
+    "pyro": {
         "srcPath": "lib",
         "entry": {
-            "development": "ex2.development.ts",
-            "production": "ex2.production.ts"
+            "development": "permission-tree.development.ts",
+            "production": "permission-tree.production.ts"
         }
     },
     "dependencies": {

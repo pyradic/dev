@@ -4,9 +4,9 @@ import PermissionTree from './PermissionTree.vue';
 
 const log = require('debug')('install');
 
-export { Ex2VuePlugin }
+export { PermissionTreeVuePlugin }
 
-export default class Ex2VuePlugin {
+export default class PermissionTreeVuePlugin {
     static __installed = false
 
     static install(_Vue: typeof Vue, opts: any = {}) {

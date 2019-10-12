@@ -35,7 +35,7 @@
 <script lang="ts">
 
     import Vue, { CreateElement } from 'vue';
-    import { app, component, prop } from '@pyro/platform';
+    import { app, Component, component, prop } from '@pyro/platform';
     import { Button, Checkbox, Col, Icon, Input, Notification, Row, Tree } from 'element-ui';
     import { AddonPermission, AddonPermissions } from './interfaces';
     import { TreeData, TreeNode } from 'element-ui/types/tree';
@@ -69,7 +69,7 @@
             'ElCol'     : Col
         }
     })
-    export default class PermissionTree extends Vue {
+    export default class PermissionTree extends Component {
         name = 'permission-tree'
         $refs: { tree: Tree, input: HTMLInputElement }
         @prop.string() connectForm: string

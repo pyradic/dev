@@ -71,9 +71,7 @@ export function setupWebpacker(path) {
     });
     rules.stylus(wp);
     rules.images(wp);
-    rules.fonts(wp, {
-
-    });
+    rules.fonts(wp, {});
     rules.vue(wp);
     rules.pug(wp);
 
@@ -147,10 +145,10 @@ export function setupWebpacker(path) {
         'babel-core$'                        : '@babel/core',
         'select2$'                           : wp.isProd ? 'select2/dist/js/select2.min.js' : 'select2/dist/js/select2.full.js',
         // './../utilities'                     : 'packages/pyradic/platform/lib/vendor/utilities.js'),
-        '@c'                                 : resolve(__dirname, 'packages/pyradic/platform/lib/classes/'),
-        '@u'                                 : resolve(__dirname, 'packages/pyradic/platform/lib/utils/'),
-        '@'                                  : resolve(__dirname, 'packages/pyradic/platform/lib/'),
-        '#'                                  : resolve(__dirname, 'packages/pyradic/platform/lib/components/'),
+        '@c'                                 : resolve(__dirname, 'packages/pyro/platform/lib/classes/'),
+        '@u'                                 : resolve(__dirname, 'packages/pyro/platform/lib/utils/'),
+        '@'                                  : resolve(__dirname, 'packages/pyro/platform/lib/'),
+        '#'                                  : resolve(__dirname, 'packages/pyro/platform/lib/components/'),
         'node_modules/element-theme-scss/lib': resolve(__dirname, 'packages/element-ui-theme/lib'),
         'node_modules/element-theme-scss/src': resolve(__dirname, 'packages/element-ui-theme/src'),
         'streams::'                          : resolve(__dirname, 'vendor/anomaly/streams-platform/resources')
@@ -250,14 +248,25 @@ export class AddonFinder {
         return finder;
     }
 
+    excluded: string[] = [];
+
+    exclude(...addonNames) {
+        this.excluded.push(...addonNames)
+        return this;
+    }
+
     find(): Addon[] {
         let paths: string[] = [];
         this.globs.forEach(pattern => paths = paths.concat(glob.sync(join(this.cwd, pattern), this.globOptions)));
 
-        return paths
+        let addons = paths
             .filter(path => this.checkPathHasAddon(path))
             .map(path => this.transformPackagePathToDir(path))
             .map(path => new Addon(path));
+
+        addons = addons.filter(addon => this.excluded.includes(addon.name) === false)
+
+        return addons;
     }
 
     checkPathHasAddon(path) {
@@ -284,17 +293,16 @@ export class AddonFinder {
 }
 
 
-
-
-const INDENT = 2;
+const INDENT            = 2;
 const DEFAULT_TRANSFORM = (data) => JSON.stringify(data, null, INDENT);
 
 export interface StatsWriterPluginOptions {
-    filename?:string
+    filename?: string
     fields?: Array<keyof webpack.Stats.ToJsonOutput>
-    stats?:any
-    transform?:any
+    stats?: any
+    transform?: any
 }
+
 /**
  * Stats writer module.
  *
@@ -346,26 +354,27 @@ export interface StatsWriterPluginOptions {
  * @api public
  */
 export class StatsWriterPlugin {
-    opts:StatsWriterPluginOptions
-    constructor(opts:StatsWriterPluginOptions) {
-        opts = opts || {};
-        this.opts = {};
-        this.opts.filename = opts.filename || "stats.json";
-        this.opts.fields = typeof opts.fields !== "undefined" ? opts.fields : ["assetsByChunkName"];
-        this.opts.stats = opts.stats || {};
+    opts: StatsWriterPluginOptions
+
+    constructor(opts: StatsWriterPluginOptions) {
+        opts                = opts || {};
+        this.opts           = {};
+        this.opts.filename  = opts.filename || 'stats.json';
+        this.opts.fields    = typeof opts.fields !== 'undefined' ? opts.fields : [ 'assetsByChunkName' ];
+        this.opts.stats     = opts.stats || {};
         this.opts.transform = opts.transform || DEFAULT_TRANSFORM;
 
-        if (typeof opts.stats !== "undefined" && typeof opts.fields === "undefined") {
+        if ( typeof opts.stats !== 'undefined' && typeof opts.fields === 'undefined' ) {
             // if custom stats config provided, do not filter fields unless explicitly configured
             this.opts.fields = null;
         }
     }
 
     apply(compiler) {
-        if (compiler.hooks) {
-            compiler.hooks.emit.tapPromise("stats-writer-plugin", this.emitStats.bind(this));
+        if ( compiler.hooks ) {
+            compiler.hooks.emit.tapPromise('stats-writer-plugin', this.emitStats.bind(this));
         } else {
-            compiler.plugin("emit", this.emitStats.bind(this));
+            compiler.plugin('emit', this.emitStats.bind(this));
         }
     }
 
@@ -373,12 +382,12 @@ export class StatsWriterPlugin {
         // Get stats.
         // The second argument automatically skips heavy options (reasons, source, etc)
         // if they are otherwise unspecified.
-        let stats = curCompiler.getStats().toJson(this.opts.stats, "forToString");
+        let stats = curCompiler.getStats().toJson(this.opts.stats, 'forToString');
 
         // Filter to fields.
-        if (this.opts.fields) {
+        if ( this.opts.fields ) {
             stats = this.opts.fields.reduce((memo, key) => {
-                memo[key] = stats[key];
+                memo[ key ] = stats[ key ];
                 return memo;
             }, {});
         }
@@ -396,14 +405,14 @@ export class StatsWriterPlugin {
             // Finish up.
             .then((statsStr) => {
                 // Handle errors.
-                if (err) {
+                if ( err ) {
                     curCompiler.errors.push(err);
-                    if (callback) { return void callback(err); }
+                    if ( callback ) { return void callback(err); }
                     throw err;
                 }
 
                 // Add to assets.
-                curCompiler.assets[this.opts.filename] = {
+                curCompiler.assets[ this.opts.filename ] = {
                     source() {
                         return statsStr;
                     },
@@ -412,7 +421,7 @@ export class StatsWriterPlugin {
                     }
                 };
 
-                if (callback) { return void callback(); }
+                if ( callback ) { return void callback(); }
             });
     }
 }

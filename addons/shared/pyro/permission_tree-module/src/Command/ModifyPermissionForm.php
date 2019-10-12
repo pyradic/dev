@@ -1,6 +1,6 @@
 <?php
 
-namespace Examples\Ex2Module\Command;
+namespace Pyro\PermissionTreeModule\Command;
 
 use Anomaly\Streams\Platform\Asset\Asset;
 use Illuminate\Contracts\Container\Container;
@@ -26,8 +26,8 @@ class ModifyPermissionForm
      */
     public function handle(Container $container, Asset $assets)
     {
-        $this->builder->setFormOption('class', 'examples-module-ex2__permission-form');
-        $this->builder->setFormOption('form_view', 'examples.module.ex2::permission-form');
+        $this->builder->setFormOption('class', 'pyro-permission-tree__permission-form');
+        $this->builder->setFormOption('form_view', 'pyro.module.permission_tree::permission-form');
 
         $data = collect($this->builder->getSections())->map(function ($section, $key) {
             $addon[ 'key' ]     = $key;
@@ -49,8 +49,8 @@ class ModifyPermissionForm
             })->toArray();
             return $addon;
         })->values()->toArray();
-        $assets->add('scripts.js', 'examples.module.ex2::js/addon.js', [ 'webpack:ex2:scripts' ]);
-        app()->platform->addProvider('pyro.examples__ex2.Ex2ServiceProvider');
+        $assets->add('scripts.js', 'pyro.module.permission_tree::js/addon.js', [ 'webpack:permission-tree:scripts' ]);
+        app()->platform->addProvider('pyro.pyro__permission_tree.PermissionTreeServiceProvider');
         app()->platform->getData()->set('ex2.permissions', $data);
         $this->builder->addFormData('data', $data);
     }

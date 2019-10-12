@@ -172,13 +172,13 @@
             "include": [
                 "addons/*/*/*/composer.json",
                 "core/*/*/composer.json",
-                "packages/pyradic/*/composer.json",
+                "packages/pyro/*/composer.json",
                 "packages/laradic/idea/composer.json",
                 "packages/laradic/generators/composer.json",
                 "packages/laradic/support/composer.json"
             ],
             "replaces": [
-                "packages/pyradic/*/composer.json",
+                "packages/pyro/*/composer.json",
                 "packages/laradic/idea/composer.json",
                 "packages/laradic/generators/composer.json",
                 "packages/laradic/support/composer.json"

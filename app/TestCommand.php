@@ -7,7 +7,6 @@ use Anomaly\Streams\Platform\Application\Application;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Laradic\Idea\CompletionGenerator;
-use Pyro\IdeHelper\Command\GenerateEntryDomainsCompletion;
 use Pyro\IdeHelper\Completion\EntryDomainsCompletion;
 use Pyro\Platform\Bus\Dispatcher;
 use Pyro\Platform\Command\GatherJavascriptData;
