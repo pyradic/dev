@@ -33,7 +33,8 @@ for ( const addon of addons ) {
         [ addon.name ]: [ EXPORT_NAMESPACE, addon.entryName ]
     });
     // let p =addon.getRPath('resources')
-    // wp.resolve.alias.set(addon.name, addon.entry.development)
+    // wp.resolve.alias.set(addon.name + '$', addon.entry.development)
+    // wp.resolve.alias.set(addon.name + '/' + addon.pkg.pyro.srcPath, addon.srcPath)
     // wp.entry(addon.lastNameSnake).add(wp.isDev ? addon.entry.development : addon.entry.production);
     wp.entry(addon.entryName).add(addon.entry.development);
 }
@@ -74,7 +75,6 @@ function getServerConfig(): Configuration {
 }
 
 
-
 // Configures and prepares webpack for webpack cli builder (both dev and prod)
 function getBuilderConfig(): Configuration {
 
@@ -108,6 +108,9 @@ function getBuilderConfig(): Configuration {
         // helpers.minimizer(wp)
     }
 
+    // wp.optimization.splitChunks({
+    //
+    // })
     // wp.output.chunkFilename('public/vendor/chunks/[name].js')
 
     wp.extendConfig(config => {
@@ -116,7 +119,17 @@ function getBuilderConfig(): Configuration {
             namedModules: true,
             chunkIds    : 'named',
             moduleIds   : 'named',
-            minimize    : false
+            minimize    : false,
+            splitChunks : {
+                cacheGroups: {
+                    vendors: {
+                        name: 'vendors',
+                        test: /[\\/]node_modules[\\/](inversify|reflect-metadata|core-js|axios|tapable|util|lodash|element-ui|tslib|process|debug)/,
+                        enforce:true,
+                        chunks:'initial'
+                    }
+                }
+            }
         }
         return config;
     })
