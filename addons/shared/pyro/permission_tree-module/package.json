@@ -2,12 +2,12 @@
     "name": "@pyro/permission-tree",
     "version": "1.0.0",
     "scripts": {},
-    "main": "resources/js/addon.js",
+    "main": "lib/index.ts",
     "pyro": {
         "srcPath": "lib",
         "entry": {
-            "development": "permission-tree.development.ts",
-            "production": "permission-tree.production.ts"
+            "development": "index.ts",
+            "production": "index.ts"
         }
     },
     "dependencies": {

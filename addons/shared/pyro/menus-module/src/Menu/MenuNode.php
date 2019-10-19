@@ -5,7 +5,7 @@ namespace Pyro\MenusModule\Menu;
 use Pyro\MenusModule\Link\Contract\LinkInterface;
 use Pyro\MenusModule\Link\LinkNode;
 use Pyro\MenusModule\Link\LinkNodeCollection;
-use Pyro\Platform\TreeNode\ModelNode;
+use Pyro\Platform\Ui\TreeNode\ModelNode;
 
 /**
  * @method \Pyro\MenusModule\Menu\MenuModel|\Pyro\MenusModule\Menu\Contract\MenuInterface getValue()

@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import '@pyro/platform'
 import MenuEditor from './MenuEditor.vue'
 import MenuEditorForm from './MenuEditorForm.vue'
 import { prefixAndRegisterComponents } from '@pyro/platform';
@@ -19,5 +18,9 @@ export default class MenusVuePlugin {
             'menu-editor-form': MenuEditorForm,
         })
 
+        // prefixAndRegisterComponents(_Vue, {
+        //     'menu-editor': () => import('./MenuEditor.vue'),
+        //     'menu-editor-form': () => import('./MenuEditorForm.vue'),
+        // })
     }
 }

@@ -6,8 +6,8 @@
     "pyro": {
         "srcPath": "lib",
         "entry": {
-            "development": "menus.development.ts",
-            "production": "menus.production.ts"
+            "development": "index.ts",
+            "production": "index.ts"
         }
     },
     "dependencies": {

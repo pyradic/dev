@@ -1,15 +1,14 @@
 {
     "pyro__platform": {
         "scripts": [
-            "http://pyro.local:8079/js/pyro__platform.js",
-            "http://pyro.local:8079/pyro__platform.6b4511c67054759e185e.hot-update.js"
+            "http://pyro.local:8079/js/pyro__platform.js"
         ],
         "styles": []
     },
     "pyro__admin_theme": {
         "scripts": [
             "http://pyro.local:8079/js/pyro__admin_theme.js",
-            "http://pyro.local:8079/pyro__admin_theme.6b4511c67054759e185e.hot-update.js"
+            "http://pyro.local:8079/pyro__admin_theme.f86d6925cc31ac0648e8.hot-update.js"
         ],
         "styles": []
     },

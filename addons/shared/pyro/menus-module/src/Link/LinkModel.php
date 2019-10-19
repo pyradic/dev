@@ -228,7 +228,7 @@ class LinkModel extends MenusLinksEntryModel implements LinkInterface
      */
     public function getAllowedRoles()
     {
-        return $this->allowed_roles;
+        return $this->allowedRoles;
     }
 
     /**

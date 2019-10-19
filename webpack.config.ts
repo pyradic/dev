@@ -3,7 +3,7 @@
 Error.stackTraceLimit = Infinity;
 
 import { blocks, plugins } from '@radic/webpacker';
-import { Addon, AddonFinder, getTemplatedPathOptions, setupWebpacker } from './utils'
+import { Addon, AddonFinder, env, getTemplatedPathOptions, setupWebpacker } from './utils'
 import { resolve } from 'path';
 import { Configuration } from 'webpack';
 
@@ -14,6 +14,7 @@ const mode: Configuration['mode'] = wp.store.get('mode');
 // helpers.speedMeasure(wp, {})
 
 wp.ensureLink('packages/element-ui-theme', 'node_modules/element-ui-theme');
+// wp.ensureLink('packages/element-ui-theme/lib', 'node_modules/element-ui/lib/theme-pycrvs');
 wp.ensureLink('core/pyrocms/accelerant-theme', 'node_modules/accelerant-theme'); // allows us to use @import "~accelerant-theme/.." in our SCSS
 
 wp.output.library([ EXPORT_NAMESPACE, '[addon:entryName]' ] as any)
@@ -60,7 +61,7 @@ function getServerConfig(): Configuration {
     blocks.helpers.devServer(wp)
 
     plugins.json(wp, {
-        filePath: resolve(__dirname, 'config', 'webpack.json')
+        filePath: resolve(__dirname, env.WEBPACK_PATH)
     })
 
     wp.devServer
@@ -80,10 +81,10 @@ function getBuilderConfig(): Configuration {
 
     wp.devtool('#source-map');
 
-    wp.output
-        .filename('js/[name].js')
-        .path(__dirname + '/public/assets')
-        .chunkFilename('js/[name].chunk.[id].js');
+    wp.output.path(__dirname + '/public/assets')
+    //     .filename('js/[name].js')
+    //     .path(__dirname + '/public/assets')
+    //     .chunkFilename('js/[name].chunk.[id].js');
 
     if ( wp.isProd ) {
         wp.settings.sourceMap = false;
@@ -113,26 +114,26 @@ function getBuilderConfig(): Configuration {
     // })
     // wp.output.chunkFilename('public/vendor/chunks/[name].js')
 
-    wp.extendConfig(config => {
-        config.optimization = {
-            namedChunks : true,
-            namedModules: true,
-            chunkIds    : 'named',
-            moduleIds   : 'named',
-            minimize    : false,
-            splitChunks : {
-                cacheGroups: {
-                    vendors: {
-                        name: 'vendors',
-                        test: /[\\/]node_modules[\\/](inversify|reflect-metadata|core-js|axios|tapable|util|lodash|element-ui|tslib|process|debug)/,
-                        enforce:true,
-                        chunks:'initial'
-                    }
-                }
-            }
-        }
-        return config;
-    })
+    // wp.extendConfig(config => {
+    //     config.optimization = {
+    //         namedChunks : true,
+    //         namedModules: true,
+    //         chunkIds    : 'named',
+    //         moduleIds   : 'named',
+    //         minimize    : false,
+    //         splitChunks : {
+    //             cacheGroups: {
+    //                 vendors: {
+    //                     name: 'vendors',
+    //                     test: /[\\/]node_modules[\\/](inversify|reflect-metadata|core-js|axios|tapable|util|lodash|element-ui|tslib|process|debug)/,
+    //                     enforce:true,
+    //                     chunks:'initial'
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     return config;
+    // })
     // wp.extendConfig(config => {
     //     config.optimization              = config.optimization || {}
     //     config.optimization.runtimeChunk = 'multiple';
@@ -168,6 +169,7 @@ if ( wp.isServer ) {
 } else {
     config = getBuilderConfig()
 }
+
 
 
 export default config;

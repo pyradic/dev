@@ -6,8 +6,7 @@ use Anomaly\Streams\Platform\Addon\AddonCollection;
 use Anomaly\Streams\Platform\Application\Application;
 use Illuminate\Console\Command;
 use Illuminate\Foundation\Bus\DispatchesJobs;
-use Laradic\Idea\CompletionGenerator;
-use Pyro\IdeHelper\Completion\EntryDomainsCompletion;
+use Illuminate\View\Factory;
 use Pyro\Platform\Bus\Dispatcher;
 use Pyro\Platform\Command\GatherJavascriptData;
 
@@ -17,11 +16,9 @@ class TestCommand extends Command
 
     protected $signature = 'test';
 
-    public function handle(CompletionGenerator $generator)
+    public function handle(Factory $factory)
     {
-        $g=$generator->append(EntryDomainsCompletion::class)->generate();
-
-        return;
+//        view('pyro.module.permission_tree::permission-form');
     }
 
     public function handle2(AddonCollection $collection, Application $application)

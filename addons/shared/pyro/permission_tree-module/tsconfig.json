@@ -7,9 +7,10 @@
             "../../../../node_modules/@types"
         ],
         "paths": {
-            "@pyro/admin-theme": ["../../pyro/admin-theme/lib/admin-theme.ts"]
+            "@pyro/platform": ["../../../../packages/pyro/platform/lib"],
+            "@pyro/admin-theme": ["../admin-theme/lib"]
         }
     },
     "include": ["lib"],
-    "exclude": [ "node_modules"]
+    "exclude": [ "node_modules","../../../../packages/pyro/platform/lib"]
 }

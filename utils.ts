@@ -13,6 +13,7 @@ const { parsed: env } = config({
     debug: true
 })
 
+export {env}
 
 export interface PackageJson extends IPackageJson {
     pyro?: {
@@ -44,10 +45,16 @@ export function setupWebpacker(path) {
         comments      : wp.isDev,
         presets       : [ [ '@vue/babel-preset-app' ] ],
         plugins       : [
-            [ 'component', {
-                libraryName     : 'element-ui',
-                styleLibraryName: 'theme-pycrvs'
-            } ]
+            // [ 'component', {
+            //     libraryName     : 'element-ui',
+            //     styleLibraryName:'~element-ui-theme',
+            //     // styleLibrary:{
+            //     //     name:  '~element-ui-theme',
+            //     //     path: '[module]/lib/index.css'
+            //     // },
+            //     libDir: 'lib',
+            //     style: 'lib/index.css'
+            // } ]
         ]
     });
 
@@ -69,10 +76,16 @@ export function setupWebpacker(path) {
             implementation: require('sass')
         }
     });
+// wp.module.rule('scss').use('save-content-loader').loader(resolve(__dirname, 'save-content-loader')).options({
+//     name: 'babel',
+// });
     rules.stylus(wp);
     rules.images(wp);
     rules.fonts(wp, { publicPath: '/assets/fonts/' });
-    rules.vue(wp);
+    rules.vue(wp)
+    //     compiler:''
+    //     tsx: ''
+    // });
     rules.pug(wp);
 
     rules.babel(wp);
@@ -108,9 +121,8 @@ export function setupWebpacker(path) {
             camel2DashComponentName: true,
 
             style: (path: string) => {
-                // process.stderr.write('element ui style path: ' + path);
                 let out = join('node_modules', 'element-theme-scss', 'src', `${camel2Dash(basename(path, '.js'))}.scss`);
-                // process.stderr.write('element ui out: ' + out);
+                // process.stderr.write('element ui path: [' + path + ']      out: ' + out);
                 return out;
             }
         }
@@ -169,7 +181,7 @@ export function setupWebpacker(path) {
         // 'quasar'                : 'Quasar'
     });
 
-    JsonPlugin.webpackJson.filePath = resolve(__dirname, 'config', 'webpack.json');
+    JsonPlugin.webpackJson.filePath = resolve(__dirname, env.WEBPACK_PATH);
     JsonPlugin.webpackJson.ensureRemoved();
 
     return wp;

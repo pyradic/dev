@@ -24,40 +24,20 @@ use Pyro\MenusModule\Menu\MenuRepository;
 class MenusModuleServiceProvider extends AddonServiceProvider
 {
 
-    /**
-     * The addon plugins.
-     *
-     * @var array
-     */
     protected $plugins = [
         MenusModulePlugin::class,
     ];
 
-    /**
-     * The class bindings.
-     *
-     * @var array
-     */
     protected $bindings = [
         MenusLinksEntryModel::class => LinkModel::class,
         MenusMenusEntryModel::class => MenuModel::class,
     ];
 
-    /**
-     * The singleton bindings.
-     *
-     * @var array
-     */
     protected $singletons = [
         LinkRepositoryInterface::class => LinkRepository::class,
         MenuRepositoryInterface::class => MenuRepository::class,
     ];
 
-    /**
-     * The addon routes.
-     *
-     * @var array
-     */
     protected $routes = [
         'admin/menus'                                    => [ 'as' => 'pyro.module.menus', 'uses' => 'Pyro\MenusModule\Http\Controller\Admin\MenusController@index' ],
         'admin/menus/choose'                             => [ 'as' => 'pyro.module.menus::choose', 'uses' => 'Pyro\MenusModule\Http\Controller\Admin\MenusController@choose' ],
@@ -72,25 +52,14 @@ class MenusModuleServiceProvider extends AddonServiceProvider
         'admin/menus/links/{menu}/change/{id}'           => [ 'as' => 'pyro.module.menus::links.change', 'uses' => 'Pyro\MenusModule\Http\Controller\Admin\LinksController@change' ],
         'admin/menus/links/delete/{id}'                  => [ 'as' => 'pyro.module.menus::links.delete', 'uses' => 'Pyro\MenusModule\Http\Controller\Admin\AjaxLinksController@delete' ],
 //        'admin/menus/links/delete/{id}'                  => [ 'as' => 'pyro.module.menus::links.delete', 'uses' => 'Pyro\MenusModule\Http\Controller\Admin\LinksController@delete' ],
-        'admin/menus/links/choose/{menu}/{parent?}'                => [ 'as' => 'pyro.module.menus::links.choose', 'uses' => 'Pyro\MenusModule\Http\Controller\Admin\LinksController@choose' ],
+        'admin/menus/links/choose/{menu}/{parent?}'      => [ 'as' => 'pyro.module.menus::links.choose', 'uses' => 'Pyro\MenusModule\Http\Controller\Admin\LinksController@choose' ],
 
         //        'admin/menus/links/{menu?}'                 => 'Pyro\MenusModule\Http\Controller\Admin\LinksController@index',
         //        'admin/menus/links/{menu}/edit/{id}'        => 'Pyro\MenusModule\Http\Controller\Admin\LinksController@edit',
 
     ];
 
-    /**
-     * Register the addon.
-     *
-     * @param AddonIntegrator $integrator
-     * @param AddonCollection $addons
-     * @param EntryModel      $model
-     */
-    public function register(
-        AddonIntegrator $integrator,
-        AddonCollection $addons,
-        EntryModel $model
-    )
+    public function register(AddonIntegrator $integrator, AddonCollection $addons)
     {
         $names = [ 'divider', 'header', 'label', 'module', 'url' ];
         foreach ($names as $name) {
@@ -105,22 +74,9 @@ class MenusModuleServiceProvider extends AddonServiceProvider
 
     public function boot()
     {
-//        $this->app->events->listen(RouteMatched::class, function (RouteMatched $event) {
-//            if ($event->request->is('pyro.module.menus::links')) {
-//                $this->app[ Asset::class ]->add('scripts.js', 'pyro.module.menus::js/addon.js', [ 'webpack:menus:scripts' ]);
-//                $this->app->platform->addProvider('pyro.menus.MenusServiceProvider');
-//            }
-//        });
     }
 
     public function map(Router $router)
     {
-//        $router->any('admin/menus/links/{menu?}', [
-//            'as'   => 'pyro.module.menus::links',
-//            'uses' => 'Pyro\MenusModule\Http\Controller\Admin\AjaxLinksController@index',
-//            'csrf' => false
-//        ]);
-
-        return;
     }
 }

@@ -45,6 +45,7 @@
         "@types/pug": "^2.0.4",
         "@types/qs": "^6.5.3",
         "@types/sass": "^1.16.0",
+        "@types/styled-components": "^4.1.19",
         "@types/stylus": "^0.48.31",
         "@types/tapable": "^1.0.4",
         "@types/webpack": "^4.39.1",

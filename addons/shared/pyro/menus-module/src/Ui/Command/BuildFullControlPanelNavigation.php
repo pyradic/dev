@@ -47,7 +47,6 @@ class BuildFullControlPanelNavigation
     protected $sectionInput;
     /** @var \Anomaly\Streams\Platform\Ui\ControlPanel\Component\Section\SectionFactory */
     protected $sectionFactory;
-
     /** @var \Pyro\MenusModule\Ui\ItemCollection */
     protected $resolved;
     /** @var \Anomaly\Streams\Platform\Addon\Module\Module */
@@ -93,14 +92,11 @@ class BuildFullControlPanelNavigation
         $this->cp           = $builder->getControlPanel();
         $this->activeModule = $this->modules->active();
 
-
         $this->dispatchNow(new BuildNavigation($builder));
         $this->dispatchNow(new SetActiveNavigationLink($builder));
         $this->dispatchNow(new SetMainNavigationLinks($builder));
-
         $this->dispatchNow(new BuildSections($builder));
         $this->dispatchNow(new SetActiveSection($builder));
-
         $this->dispatchNow(new BuildShortcuts($builder));
 
         $this->activeSection = $builder->getControlPanelActiveSection();

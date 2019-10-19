@@ -2,11 +2,11 @@
 
 namespace Pyro\MenusModule\Link;
 
-use Pyro\Platform\TreeNode\ModelNode;
+use Pyro\Platform\Ui\TreeNode\ModelNode;
 
 /**
  * @method \Pyro\MenusModule\Link\LinkModel|\Pyro\MenusModule\Link\Contract\LinkInterface|\Pyro\MenusModule\Link\LinkPresenter getValue()
- * @method \Pyro\MenusModule\Link\LinkNodeCollection|\Pyro\MenusModule\Link\Contract\LinkInterface[]||\Pyro\MenusModule\Link\LinkPresenter[] getChildren()
+ * @method \Pyro\MenusModule\Link\LinkNodeCollection|\Pyro\MenusModule\Link\Contract\LinkInterface[]|\Pyro\MenusModule\Link\LinkPresenter[] getChildren()
  * @mixin \Pyro\MenusModule\Link\LinkModel
  */
 class LinkNode extends ModelNode

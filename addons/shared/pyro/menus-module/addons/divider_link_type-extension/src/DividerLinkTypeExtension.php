@@ -37,7 +37,7 @@ class DividerLinkTypeExtension extends LinkTypeExtension
      */
     public function title(LinkInterface $link)
     {
-        return '---';
+        return '';
     }
 
     public function info(LinkInterface $link)

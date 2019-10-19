@@ -1,5 +1,6 @@
-{% import options.get('macro', 'crvs.module.menus::crvs_admin_macro') as macro %}
+{% import options.get('macro', 'pyro.module.menus::pyro_admin_macro') as macro %}
 
+<{{ options.list_tag ?: 'ul' }} class="{{ options.list_class }}" {{ html_attributes(options.get('list_attributes', [])) }}>
 <c-menu
 horizontal
 submenu-type="dropdown"

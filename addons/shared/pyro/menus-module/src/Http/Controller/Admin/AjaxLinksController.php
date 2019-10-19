@@ -36,36 +36,11 @@ class AjaxLinksController extends AdminController
         $treeBuilder = $this->call('renderTree', compact('menu'));
         $tree        = $treeBuilder->getTreeContent();
         if ($isPost) {
-            return $treeBuilder->render();
+            return $treeBuilder->getTreeResponse();
         }
         $menu_types = $extensions->search('pyro.module.menus::link_type.*')->enabled();
         $this->setPlatformData($menu, $menu_types);
         return view('module::ajax_links', [ 'tree' => $tree, 'menu_types' => $menu_types, 'menu' => $menu ]);
-    }
-
-    protected function setPlatformData(string $menuSlug, ExtensionCollection $menuTypes)
-    {
-        $types = $menuTypes->map(function (LinkTypeExtension $type) {
-            $name        = $type->getName();
-            $description = $type->getDescription();
-            $namespace   = $type->getNamespace();
-            $title       = $type->getTitle();
-            $slug        = $type->getSlug();
-            return array_map('trans', compact('name', 'description', 'namespace', 'title', 'slug'));
-        })->toArray();
-
-        $urls = [
-            'tree'   => $this->url->to("admin/menus/links/{$menuSlug}/tree"),
-            'create' => $this->url->to("admin/menus/links/{$menuSlug}/form"),
-            'edit'   => $this->url->to("admin/menus/links/{$menuSlug}/edit"),
-            'delete' => $this->url->to('admin/menus/links/delete'),
-        ];
-
-        $platform = app()->platform
-            ->addPublicScript('assets/js/pyro__menus.js')
-            ->addPublicStyle('assets/css/pyro__menus.css')
-            ->addProvider('pyro.pyro__menus.MenusServiceProvider')
-            ->set('pyro.menus', compact('types', 'menuSlug', 'urls'));
     }
 
     protected function call($method, $params = [])
@@ -97,7 +72,7 @@ class AjaxLinksController extends AdminController
             $menu = $menus->findBySlug((string)$menu);
         }
 
-        abort_if(!$menu, Response::HTTP_NOT_ACCEPTABLE, 'Could not find menu');
+        abort_if(! $menu, Response::HTTP_NOT_ACCEPTABLE, 'Could not find menu');
 
         $treeBuilder->setMenu($menu);
         $treeBuilder->render();
@@ -165,8 +140,6 @@ class AjaxLinksController extends AdminController
         $link = $linkFormBuilder->setType($type)->setMenu($menu);
         $formBuilder->addForm('type', $typeBuilder);
         $formBuilder->addForm('link', $link);
-//        $formBuilder->setAjax(true);
-//        $formBuilder->setOption('form_view', 'module::navigation.ajax_form');
 
         $formBuilder->setOption('wrapper_view', 'pyro.module.menus::wrapper_view');
         $this->rebindAssetsForAjax();
@@ -179,15 +152,14 @@ class AjaxLinksController extends AdminController
 
         $formBuilder->render();
         $content = $formBuilder->getFormContent();
-//        $content = $this->addFormAssetsToContent($content);
 
         $assets = resolve(Asset::class);
         $js     = $assets->has('scripts.js') ? $assets->content('scripts.js') : '';
         $css    = $assets->has('styles.css') ? $assets->inline('styles.css') : '';
         return response()->json([
             'form' => $content->render(),
-            'css' => $css,
-            'js' => "
+            'css'  => $css,
+            'js'   => "
 (function(){
     var module = {};
 
@@ -195,7 +167,7 @@ class AjaxLinksController extends AdminController
     ;
 
 }.call());                 
-            "
+            ",
         ]);
         return $content;
     }
@@ -248,7 +220,7 @@ class AjaxLinksController extends AdminController
             $linkFormBuilder->setEntry($id)->setType($entry->getType())->setMenu($menu = $menus->findBySlug($slug))
         );
 
-        $assets=$this->rebindAssetsForAjax();
+        $assets = $this->rebindAssetsForAjax();
 
         if ($isPost) {
             $formBuilder->setAjax(true);
@@ -258,15 +230,12 @@ class AjaxLinksController extends AdminController
 
         $formBuilder->render();
         $content = $formBuilder->getFormContent();
-//        $content = $this->addFormAssetsToContent($content);
-
-//        $assets = resolve(Asset::class);
-        $js     = $assets->has('scripts.js') ? $assets->content('scripts.js') : '';
-        $css    = $assets->has('styles.css') ? $assets->inline('styles.css') : '';
+        $js  = $assets->has('scripts.js') ? $assets->content('scripts.js') : '';
+        $css = $assets->has('styles.css') ? $assets->inline('styles.css') : '';
         return response()->json([
             'form' => $content->render(),
-            'css' => $css,
-            'js' => "
+            'css'  => $css,
+            'js'   => "
 (function(){
     var module = {};
 
@@ -274,11 +243,9 @@ class AjaxLinksController extends AdminController
     ;
 
 }.call());                 
-            "
+            ",
         ]);
-        return $content;
     }
-
 
     public function create(
         LinkFormBuilder $link,
@@ -325,6 +292,7 @@ class AjaxLinksController extends AdminController
         );
     }
 
+
     public function delete(LinkRepositoryInterface $links, Authorizer $authorizer)
     {
         abort_unless($authorizer->authorize('pyro.module.menus::links.delete'), trans('streams::message.access_denied'));
@@ -336,5 +304,30 @@ class AjaxLinksController extends AdminController
             ]);
         }
         return $this->redirect->back();
+    }
+
+    protected function setPlatformData(string $menuSlug, ExtensionCollection $menuTypes)
+    {
+        $types = $menuTypes->map(function (LinkTypeExtension $type) {
+            $name        = $type->getName();
+            $description = $type->getDescription();
+            $namespace   = $type->getNamespace();
+            $title       = $type->getTitle();
+            $slug        = $type->getSlug();
+            return array_map('trans', compact('name', 'description', 'namespace', 'title', 'slug'));
+        })->toArray();
+
+        $urls = [
+            'tree'   => $this->url->to("admin/menus/links/{$menuSlug}/tree"),
+            'create' => $this->url->to("admin/menus/links/{$menuSlug}/form"),
+            'edit'   => $this->url->to("admin/menus/links/{$menuSlug}/edit"),
+            'delete' => $this->url->to('admin/menus/links/delete'),
+        ];
+
+        $platform = app()->platform
+            ->addPublicScript('assets/js/pyro__menus.js')
+            ->addPublicStyle('assets/css/pyro__menus.css')
+            ->addProvider('pyro.pyro__menus.MenusServiceProvider')
+            ->set('pyro.menus', compact('types', 'menuSlug', 'urls'));
     }
 }

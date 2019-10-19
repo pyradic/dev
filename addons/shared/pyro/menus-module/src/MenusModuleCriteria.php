@@ -46,13 +46,13 @@ class MenusModuleCriteria extends PluginCriteria
 
     public function pyroAdmin()
     {
-        $this->options['tag'] = 'c-menu';
-        $this->options['item_tag'] = 'div';
-        $this->options['submenu_tag'] = 'div';
+        $this->options['tag'] = 'el-menu';
+        $this->options['item_tag'] = 'el-menu-item';
+        $this->options['submenu_tag'] = 'el-submenu';
         $this->options['horizontal'] = true;
         $this->options['submenu_trigger'] = 'hover';
         $this->options['submenu_type'] = 'dropdown';
-        $this->options['view'] = 'pyro.module.menus::pyro_admin_links';
+        $this->options['view'] = 'pyro.module.menus::admin_menu';
 
         return $this;
     }
